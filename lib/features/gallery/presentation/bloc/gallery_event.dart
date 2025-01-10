@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:photo_manager/photo_manager.dart';
 
 abstract class GalleryEvent extends Equatable {
   const GalleryEvent();
@@ -12,6 +13,8 @@ abstract class GalleryEvent extends Equatable {
 class GetMediaAlbumsEvent extends GalleryEvent{
 
 }
-class GetMediaAssetsEvent extends GalleryEvent{
+class GetMediaAssetsEvent extends GalleryEvent {
+  final AssetPathEntity selectedAlbum;
 
+  const GetMediaAssetsEvent(this.selectedAlbum);
 }
