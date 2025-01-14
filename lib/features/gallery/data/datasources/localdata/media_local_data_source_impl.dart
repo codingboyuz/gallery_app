@@ -3,27 +3,33 @@ import 'package:photo_manager/photo_manager.dart';
 
 class MediaLocalDataSourceImpl implements MediaLocalDataSource {
   @override
-  Future<List<AssetPathEntity>> loadAlbums() async {
-    var permission = await PhotoManager.requestPermissionExtend();
-    List<AssetPathEntity> albumList = [];
-    if (permission.isAuth) {
-      albumList = await PhotoManager.getAssetPathList(
-        type: RequestType.common,
-      );
-    } else {
-      PhotoManager.openSetting();
-    }
-    return albumList;
-  }
+  Future<List<AssetEntity>> loadAssets() async {
+    // Ruxsatni so'raymiz
+    // var permission = await PhotoManager.requestPermissionExtend();
+    // if (!permission.isAuth) {
+    //   PhotoManager.openSetting();
+    //   return [];
+    // }
 
-  @override
-  Future<List<AssetEntity>> loadAssets(AssetPathEntity selectedAlbum) async {
-    // Bu yerda to'g'ri diapazonni kiritamiz
-    int assetCount = await selectedAlbum.assetCountAsync;
-    List<AssetEntity> assetList = await selectedAlbum.getAssetListRange(
-      start: 0,
-      end: assetCount, // assetCount bilan to'liq ro'yxatni yuklaymiz
+    // "Recent" yoki "All Photos" albomini topamiz
+    List<AssetPathEntity> albums = await PhotoManager.getAssetPathList(
+      type: RequestType.image,
+      hasAll: true,
     );
+
+    // Barcha rasmlarni yuklash uchun Recent albomini olamiz
+    AssetPathEntity recentAlbum = albums.firstWhere(
+      (album) => album.isAll,
+      orElse: () => albums.first,
+    );
+
+    // Rasmlarni yuklaymiz
+    int assetCount = await recentAlbum.assetCountAsync;
+    List<AssetEntity> assetList = await recentAlbum.getAssetListRange(
+      start: 0,
+      end: assetCount,
+    );
+
     return assetList;
   }
 }

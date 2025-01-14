@@ -1,5 +1,4 @@
-library my_library;
-
+library app_library;
 
 export 'package:gallery_app/features/gallery/presentation/ui/gallery_screen.dart';
 export 'package:gallery_app/features/gallery/data/datasources/localdata/media_local_data_source.dart';
@@ -15,6 +14,4 @@ export 'package:gallery_app/features/gallery/data/repositories/media_repository_
 export 'package:gallery_app/core/routes/navigation.dart';
 export 'package:gallery_app/core/routes/routes.dart';
 export 'package:gallery_app/injection.dart';
-
-
-
+export 'package:gallery_app/features/gallery/presentation/bloc/gallery_bloc.dart';

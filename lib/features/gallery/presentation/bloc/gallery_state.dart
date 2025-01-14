@@ -10,11 +10,6 @@ class GallerySuccess<T> extends GalleryState {
   GallerySuccess(this.data);
 }
 
-class GalleryAssetsSuccess<T> extends GalleryState {
-  final T data;
-
-  GalleryAssetsSuccess(this.data);
-}
 
 class GalleryError<T> extends GalleryState {
   final String error;

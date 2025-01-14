@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gallery_app/core/routes/routes.dart';
+import 'package:gallery_app/features/albums/domain/usecase/albums_usecase.dart';
+import 'package:gallery_app/features/albums/presentation/bloc/albums_bloc.dart';
+import 'package:gallery_app/features/albums/presentation/ui/album_screen.dart';
 import 'package:gallery_app/features/gallery/domain/usecase/media_picker_usecase.dart';
 import 'package:gallery_app/features/gallery/presentation/bloc/gallery_bloc.dart';
 import 'package:gallery_app/features/gallery/presentation/ui/gallery_screen.dart';
+import 'package:gallery_app/features/main/bloc/main_bloc.dart';
+import 'package:gallery_app/features/main/ui/main_screen.dart';
 import 'package:gallery_app/injection.dart';
 
 class AppPages {
@@ -13,12 +18,24 @@ class AppPages {
   static List<PageEntity> routes() {
     return [
       PageEntity(
-          path: AppRoutes.GALLERY,
-          page: const GalleryScreen(),
-          bloc: BlocProvider(
-              create: (_) => GalleryBloc(
-                  mediaAlbumsUseCase: getIt<MediaAlbumsUseCase>(),
-                  mediaAssetsUseCase: getIt<MediaAssetsUseCase>()))),
+          path: AppRoutes.MAIN,
+          page: MainScreen(),
+          bloc: BlocProvider(create: (_) => MainBloc())),
+      PageEntity(
+        path: AppRoutes.GALLERY,
+        page: GalleryScreen(),
+        bloc: BlocProvider(
+            create: (_) =>
+                GalleryBloc(mediaAssetsUseCase: getIt<MediaAssetsUseCase>())),
+      ),
+      PageEntity(
+        path: AppRoutes.ALBUMS,
+        page: AlbumsScreen(),
+        bloc: BlocProvider(
+            create: (_) => AlbumsBloc(
+                albumsItemUseCase: getIt<AlbumsItemUseCase>(),
+                albumsUseCase: getIt<AlbumsUseCase>())),
+      ),
     ];
   }
 
@@ -37,7 +54,7 @@ class AppPages {
       if (result.isNotEmpty) {
         if (result.first.path == AppRoutes.initialRoute) {
           return MaterialPageRoute<void>(
-              builder: (_) => const GalleryScreen(), settings: settings);
+              builder: (_) => MainScreen(), settings: settings);
         }
         return MaterialPageRoute<void>(
             builder: (_) => result.first.page, settings: settings);
