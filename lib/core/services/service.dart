@@ -2,6 +2,8 @@ import 'package:photo_manager/photo_manager.dart';
 import 'package:intl/intl.dart';
 
 abstract class AppServices {
+
+
   static Map<String, List<AssetEntity>> groupImagesByDate(
       List<AssetEntity> images) {
     Map<String, List<AssetEntity>> groupedImages = {};
@@ -17,6 +19,8 @@ abstract class AppServices {
 
     return groupedImages;
   }
+
+
 
   static String dateFormat(String? dateString) {
     if (dateString == null || dateString.isEmpty) {

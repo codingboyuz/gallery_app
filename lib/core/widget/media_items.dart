@@ -2,22 +2,47 @@ import 'package:flutter/material.dart';
 import 'package:gallery_app/core/services/service.dart';
 import 'package:gallery_app/core/widget/media_entity_provider.dart';
 import 'package:gallery_app/core/widget/media_viewer.dart';
+import 'package:gallery_app/core/widget/custom_sliver_app_bar.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 class MediaItems extends StatelessWidget {
   final Map<String, List<AssetEntity>> data;
   final List<AssetEntity> ungroupedImages;
-  final ClickStatus status;
+  final String title;
 
-  const MediaItems(
-      {super.key,
-      required this.data,
-      required this.ungroupedImages,
-      this.status = ClickStatus.none});
+  const MediaItems({
+    super.key,
+    required this.data,
+    required this.ungroupedImages, required this.title,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    return title.isNotEmpty ?
+      CustomSliverAppBar(
+      title: title,
+      child: SliverList(
+          delegate: SliverChildBuilderDelegate(
+              childCount: data.length,
+              (context, index) {
+        String date = data.keys.elementAt(index);
+        String formattedDate = AppServices.dateFormat(date);
+        List<AssetEntity> imagesForDate = data[date]!;
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: 30),
+            
+
+            _buildDateHeader(formattedDate),
+            _buildImageGrid(context, imagesForDate),
+          ],
+        );
+      })),
+    ):
+    ListView.builder(
+      shrinkWrap: true,
         itemCount: data.length,
         itemBuilder: (context, index) {
           String date = data.keys.elementAt(index);
@@ -35,9 +60,10 @@ class MediaItems extends StatelessWidget {
         });
   }
 
+  // media sanas
   Widget _buildDateHeader(String date) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 15),
+      padding: EdgeInsets.only(left: 25),
       child: Text(
         date,
         style: TextStyle(
@@ -49,6 +75,7 @@ class MediaItems extends StatelessWidget {
     );
   }
 
+  //
   Widget _buildImageGrid(
       BuildContext context, List<AssetEntity> imagesForDate) {
     return GridView.builder(
@@ -64,7 +91,7 @@ class MediaItems extends StatelessWidget {
           AssetEntity entity = imagesForDate[index];
           return InkWell(
             onTap: () {
-              _openMediaItems(context,entity);
+              _openMediaItems(context, entity);
             },
             child: MediaEntityProvider(
               entity: entity,
@@ -72,31 +99,21 @@ class MediaItems extends StatelessWidget {
           );
         });
   }
-  // void _getClickStatus(BuildContext context, AssetEntity entity,List<AssetEntity> imagesForDate){
-  //   switch (status){
-  //     case ClickStatus.albums:
-  //       return _openMediaItems( context, entity,imagesForDate);
-  //     case ClickStatus.gallery:
-  //       return _openMediaItems( context, entity,ungroupedImages);
-  //     case ClickStatus.none:
-  //       // TODO: Handle this case.
-  //       throw UnimplementedError();
-  //   }
-  // }
 
   void _openMediaItems(BuildContext context, AssetEntity entity) {
     // buyerda biz guruhlangan yani sanalar bilan guruhlangan rasimni bosmoqdamiz
     // guruhlangan va guruhlanmagan list larning items indexsi harhil bo'ladi shu sababli
     // guruhlangan rasim index ni olish uchun ushbu ko'dni yozdik
     int ungroupedIndex = ungroupedImages.indexOf(entity);
-
-    Navigator.of(context).push(MaterialPageRoute(
+    // birinchi pagedan ikkinchi pagega ma'lumot olib o'tish
+    Navigator.of(context).push(
+      MaterialPageRoute(
         builder: (_) => MediaViewer(
-              entityItems: ungroupedImages,
-              initialIndex:
-                  ungroupedIndex, // Yuborilayotgan indexni guruhlanmagan ro'yxatdagi mos indexga moslashtirildi
-            )));
+          entityItems: ungroupedImages,
+          initialIndex:
+              ungroupedIndex, // Yuborilayotgan indexni guruhlanmagan ro'yxatdagi mos indexga moslashtirildi
+        ),
+      ),
+    );
   }
 }
-
-enum ClickStatus { albums, gallery, none }

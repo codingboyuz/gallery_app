@@ -44,7 +44,7 @@ class _MediaViewerState extends State<MediaViewer> {
               tag: entity.id,
               transitionOnUserGestures: true,
             ),
-            // Animatsiya tezligi),
+            // Animatsiya tezligi va rasimni zoom qilish
             minScale: PhotoViewComputedScale.contained,
             maxScale: PhotoViewComputedScale.contained * 4,
           );

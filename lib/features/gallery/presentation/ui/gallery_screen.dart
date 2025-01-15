@@ -30,6 +30,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
         if (state is GallerySuccess) {
           var data = AppServices.groupImagesByDate(state.data);
           return MediaItems(
+            title:"Photo",
             data: data,
             ungroupedImages: state.data,
           );

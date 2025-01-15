@@ -4,7 +4,7 @@ import 'package:gallery_app/features/albums/domain/usecase/albums_usecase.dart';
 import 'package:gallery_app/features/albums/presentation/bloc/albums_bloc.dart';
 import 'package:gallery_app/features/gallery/data/datasources/localdata/media_local_data_source_impl.dart';
 import 'package:gallery_app/features/gallery/data/repositories/media_repository_impl.dart';
-import 'package:gallery_app/features/gallery/domain/usecase/media_picker_usecase.dart';
+import 'package:gallery_app/features/gallery/domain/usecase/media_assets_usecase.dart';
 import 'package:gallery_app/features/gallery/presentation/bloc/gallery_bloc.dart';
 import 'package:gallery_app/features/main/bloc/main_bloc.dart';
 import 'package:get_it/get_it.dart';

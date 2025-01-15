@@ -13,12 +13,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
     return MultiBlocProvider(
       providers: [...AppPages.blocer(context)],
       child: MaterialApp(
         title: 'Flutter App',
-        navigatorObservers: [routeObserver],
         initialRoute: AppRoutes.initialRoute,
         onGenerateRoute: AppPages.generateRouteSettings,
       ),

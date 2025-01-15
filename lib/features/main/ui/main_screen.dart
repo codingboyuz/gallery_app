@@ -19,13 +19,6 @@ class _MainScreenState extends State<MainScreen> {
     AlbumsScreen(),
   ];
 
-  // @override
-  // void initState() {
-  //   // TODO: implement initState
-  //   context.read<GalleryBloc>().add(GetMediaAlbumsEvent());
-  //   super.initState();
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

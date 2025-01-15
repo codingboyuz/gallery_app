@@ -9,7 +9,7 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
     required this.mediaAssetsUseCase,
 
   }) : super(GalleryInitial()) {
-
+    // Bu qator Bloc qanday eventlarni kutishini va bu eventlar kelganda qanday logikani bajarishini belgilaydi.
     on<GetMediaAssetsEvent>(_getAssets);
   }
 

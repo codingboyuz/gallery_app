@@ -1,3 +1,5 @@
+// Dastur holatlari
+
 abstract class AlbumsState<T> {}
 
 class AlbumsInitial extends AlbumsState {}

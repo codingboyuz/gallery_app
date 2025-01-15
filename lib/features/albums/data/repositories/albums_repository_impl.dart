@@ -6,26 +6,56 @@ import 'package:photo_manager/photo_manager.dart';
 import "package:photo_manager/src/types/entity.dart"
     show AssetEntity, AssetPathEntity;
 
+
+/*
+  ✏️ Repository va LocalDataSource tushunchalari:
+  Repository Pattern – bu data manbalarini boshqarish uchun
+  ishlatiladigan dizayn andozasi. Ushbu pattern orqali data manbalari
+  (masalan, lokal ma'lumotlar bazasi yoki masofaviy API)
+  va ularni iste'mol qiluvchi kod o'rtasida vositachi rolini bajaradi.
+  Repository Patternning afzalliklari quyidagicha:
+
+  🟢 Afzalliklari:
+  Kodning modul bo'lishi:
+   Data manbasini o'zgartirish oson. Masalan,
+   agar siz lokal ma'lumotlar bazasidan masofaviy serverga o'tsangiz,
+   faqat Repository kodini o'zgartirish kifoya.
+  TDD (Test-Driven Development) uchun qulay:
+   Repository pattern orqali mock ma'lumotlar manbalarini yaratish oson,
+    bu esa test jarayonini osonlashtiradi.
+  Ma'lumotlar kashfiyotini boshqarish:
+   Ma'lumotlar kechiktirilgan holda yoki keshlangan holda saqlanishi mumkin.
+*/
+
+
 class AlbumsRepositoryImpl implements AlbumsRepository {
+  //  AlbumsLocalDataSource konstruktor yordamida chaqiramiz
   final AlbumsLocalDataSource mediaLocalDataSource;
 
+  // konstruktor
   AlbumsRepositoryImpl(this.mediaLocalDataSource);
 
   @override
   Future<Either<Failure, List<AssetPathEntity>>> loadAlbums() async {
     try {
-      final result = await mediaLocalDataSource.loadAlbums();
+
+      final result = await mediaLocalDataSource.loadAlbums();//mediaLocalDataSource chaqiramiz va kelgan ma'lumotni resultga tenglaymiz
+      // agar result null bo'lmasa yani bo'sh bo'lsa , biron qiymatga ega bo'lsa shart bajariladi
       if (result.isNotEmpty) {
+        // dastur bu qisimga kirsa demak ui kegini etabga malumot success holatda kelganini bildirish uchun
+        // Rigth(result) qilib qaytaramiz
         return Right(result);
       } else {
+        // aksholda ma'lumot  error bo'lsa yoki hechqanday ma'lumot bo'lmasa
+        // Left() deb error holatni bildiramiz
         return Left(Failure(message: "Image Null"));
       }
     } catch (e) {
-      return Left(Failure(message: e.toString()));
+      return Left(Failure(message: e.toString())); // ko'zda tutilmagan hatoliklar uchun
     }
   }
 
-
+  // bu finkskiyadaham yuqoridagi funksiya kabi bo'lmoqda
   @override
   Future<Either<Failure, List<AssetEntity>>> loadAlbumsItem(AssetPathEntity entity) async{
     try {
