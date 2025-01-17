@@ -12,3 +12,6 @@ TDD dastlab **xunit** deb atalgan test framework-lari yordamida 1990-yillarda **
 4. **Refaktoring**: Kodingizni tozalash va optimallashtirish uchun refaktoring qilinadi, lekin testlar har doim o'tkaziladi.
 
 TDD dasturchilarga yuqori sifatli, o‘qilishi oson va xatoliklardan xoli kod yozish imkoniyatini beradi.
+  TDD yana bir ustunligi ko'dlarni pattrinlarga bo'linishi bu ko'dni o'shni osonlashtiradi va sizdan kegingi dasturchi yoki jamoa bilan ishlagada hechqanday qiyinchliklarsiz loyhani davom etiradi
+
+#Loyha strukturasi (papkalar joylashuvi)
