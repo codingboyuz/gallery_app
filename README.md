@@ -1,10 +1,14 @@
 # Gallery Project TDD Clean Code Architecture
 
-**TDD (Test-Driven Development)** — **Testga asoslangan dasturlash** degan ma'noni anglatadi. TDD usulida dasturlash jarayoni quyidagicha bo'ladi:
+**TDD (Test-Driven Development)** — bu **Testga asoslangan dasturlash** metodologiyasidir, unda dasturchilar kod yozishni boshlashdan oldin testlarni yaratadilar. Bu metodologiya kodning sifatini oshirish, xatoliklarni erta aniqlash va kodni soddalashtirishga yordam beradi.
 
-1. **Test yozish**: Dastlab, bajarilishi kerak bo'lgan funktsiya yoki xususiyat uchun test yoziladi. Bu test yangi kod yozilmaguncha bajarilmasligi kerak.
-2. **Kod yozish**: Testni o'tkazish uchun kerakli kod yoziladi.
-3. **Testni bajarish**: Yozilgan kod testdan o'tishi kerak. Agar test muvaffaqiyatli o'tsa, kod to'g'ri ishlaydi deb hisoblanadi.
-4. **Refactoring (Yaxshilash)**: Kodingizni optimallashtirish va uni yanada o'qilishi oson qilish uchun refaktoring qilinadi, lekin testlar har doim o'tkaziladi.
+### TDD vujudga kelishi:
+TDD dastlab **xunit** deb atalgan test framework-lari yordamida 1990-yillarda **Kent Beck** tomonidan ishlab chiqilgan. Kent Beck, shuningdek, **Extreme Programming (XP)** metodologiyasining asoschilaridan biri hisoblanadi. TDD metodologiyasi XP ning asosiy prinsiplaridan biri sifatida paydo bo‘ldi.
 
-TDD yordamida dasturchilar kodni yozishdan avval uning ishlashini kafolatlaydigan testlar yaratadilar, bu esa xatoliklarni kamaytiradi va kod sifatini oshiradi.
+### TDD jarayoni:
+1. **Test yozish**: Kodni yozishdan avval, bajarilishi kerak bo'lgan funksiyalarni sinovdan o‘tkazadigan testlar yoziladi.
+2. **Kod yozish**: Testdan muvaffaqiyatli o‘tishi uchun kerakli kod yoziladi.
+3. **Testni bajarish**: Yozilgan kod testni muvaffaqiyatli o'tkazishi kerak.
+4. **Refaktoring**: Kodingizni tozalash va optimallashtirish uchun refaktoring qilinadi, lekin testlar har doim o'tkaziladi.
+
+TDD dasturchilarga yuqori sifatli, o‘qilishi oson va xatoliklardan xoli kod yozish imkoniyatini beradi.
