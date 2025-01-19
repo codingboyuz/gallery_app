@@ -193,7 +193,7 @@ manbalarini abstraksiyalash orqali kodni modulli va oson boshqariladigan qiladi.
       almashtirish mumkin.
     - Bu **Unit Test** va **Integration Test**larni bajarishni yengillashtiradi.
 
----
+
 
 ### Repository Loyihada Qanday Ishlaydi?
 
@@ -354,3 +354,110 @@ Shu tariqa, `Either<Failure, Type>` yordamida quyidagi holatlarni aniq ko'rsatis
  3. Agar ma'lumot muvaffaqiyatli yuklansa, **Right (success)** qiymat qaytaradi.
  4. Agar xato bo'lsa, **Left (failure)** qiymat qaytaradi.
 <br>
+
+# Presentation qismi haqaqida
+
+## Bloc qismi
+
+###  **`AlbumsBloc` Klassining Asosiy Strukturası:**
+
+```dart
+class AlbumsBloc extends Bloc<AlbumsEvent, AlbumsState> {
+  final AlbumsUseCase albumsUseCase;
+  final AlbumsItemUseCase albumsItemUseCase;
+
+  AlbumsBloc({
+    required this.albumsItemUseCase,
+    required this.albumsUseCase,
+  }) : super(AlbumsInitial()) {
+    on<GetAlbumsEvent>(_getAlbums);
+    on<GetAlbumsItemEvent>(_getAlbumsItem);
+  }
+}
+```
+
+- **`AlbumsBloc`** - Bu Bloc sinfi **AlbumsEvent** voqealarini va **AlbumsState** holatlarini boshqaradi.
+- **`albumsUseCase`** va **`albumsItemUseCase`** - Bu ikkita usecase `AlbumsBloc` klassida yaratilgan va ma'lumotlarni olish uchun ishlatiladi. `albumsUseCase` albumlar ro'yxatini olishni, `albumsItemUseCase` esa album ichidagi rasmlar yoki fayllarni olishni boshqaradi.
+- **`super(AlbumsInitial())`** - Bloc boshlang'ich holatini belgilaydi. Dastlabki holat **`AlbumsInitial`** bo'ladi.
+
+###  **Holatni Qo'llanilishi:**
+
+```dart
+on<GetAlbumsEvent>(_getAlbums);
+on<GetAlbumsItemEvent>(_getAlbumsItem);
+```
+
+- **`on<GetAlbumsEvent>(_getAlbums)`**: `GetAlbumsEvent` voqeasi kelganda, `_getAlbums` metodini chaqiradi. Bu voqea albumlar ro'yxatini olish uchun ishlatiladi.
+- **`on<GetAlbumsItemEvent>(_getAlbumsItem)`**: `GetAlbumsItemEvent` voqeasi kelganda, `_getAlbumsItem` metodini chaqiradi. Bu voqea album ichidagi fayllarni olish uchun ishlatiladi.
+
+---
+
+###  **`_getAlbums` Metodi:**
+
+```dart
+Future<void>? _getAlbums(
+  GetAlbumsEvent event, Emitter<AlbumsState> emit) async {
+  try {
+    emit(AlbumsLoading());  // Loading holatini yuboradi
+
+    final result = await albumsUseCase.call(NoParams()); // albumsUseCase dan ma'lumot olish
+    result.fold((failure) {
+      emit(AlbumsError(failure.message));  // Agar xato bo'lsa, error holatini yuboradi
+    }, (response) {
+      emit(AlbumsSuccess(response));  // Muvaffaqiyatli ma'lumot bo'lsa, success holatini yuboradi
+    });
+  } catch (e) {
+    emit(AlbumsError(e.toString()));  // Ko'zda tutilmagan xatoliklarni ushlaydi va error holatini yuboradi
+  }
+}
+```
+
+- **`emit(AlbumsLoading())`**: Ma'lumot olish jarayoni boshlanganda **Loading** holatini yuboradi.
+- **`albumsUseCase.call(NoParams())`**: `albumsUseCase` yordamida albumlar ro'yxatini olish jarayoni. `NoParams` - parametrlar bo'lmagan holat.
+- **`result.fold`**: `Either<Failure, Type>` tipi bilan ishlash. Agar **xato** bo'lsa, `AlbumsError` holatini yuboradi, aks holda **muvaffaqiyatli ma'lumot** kelganda, `AlbumsSuccess` holatini yuboradi.
+- **`catch (e)`**: Agar kodda kutilmagan xato yuz bersa, u holda error holati yuboriladi.
+
+---
+
+###  **`_getAlbumsItem` Metodi:**
+
+```dart
+Future<void> _getAlbumsItem(
+  GetAlbumsItemEvent event, Emitter<AlbumsState> emit) async {
+  try {
+    emit(AlbumsLoading());  // Loading holatini yuboradi
+
+    final result = await albumsItemUseCase.call(event.selectedAlbum);  // AlbumsItemUseCase dan ma'lumot olish
+    result.fold((failure) {
+      emit(AlbumsError(failure.message));  // Xato holati yuboriladi
+    }, (response) {
+      emit(AlbumsItemSuccess(response));  // Rasm fayllari muvaffaqiyatli yuklandi
+    });
+  } catch (e) {
+    emit(AlbumsError(e.toString()));  // Ko'zda tutilmagan xatoliklarni ushlaydi va error holatini yuboradi
+  }
+}
+```
+
+- **`emit(AlbumsLoading())`**: Yana Loading holati yuboriladi, bu yerda albumga tegishli rasm fayllari olish jarayoni boshlanadi.
+- **`albumsItemUseCase.call(event.selectedAlbum)`**: `albumsItemUseCase` yordamida tanlangan albumga tegishli rasm fayllari olinadi.
+- **`result.fold`**: Agar xato bo'lsa, **`AlbumsError`** holati yuboriladi, aks holda **`AlbumsItemSuccess`** holati yuboriladi.
+
+---
+
+###  **Blocning Holatlari (State):**
+
+- **`AlbumsInitial`**: Dastlabki holat, Bloc hali ishga tushmagan.
+- **`AlbumsLoading`**: Ma'lumot olish jarayoni davom etmoqda.
+- **`AlbumsError`**: Xatolik yuz berdi.
+- **`AlbumsSuccess`**: Muvaffaqiyatli ma'lumot olinmoqda.
+- **`AlbumsItemSuccess`**: Album rasmlari muvaffaqiyatli yuklandi.
+
+---
+
+### Xulosa:
+
+- **Bloc arxitekturasi**: Kodda **Flutter Bloc** arxitekturasi ishlatilgan, bu ma'lumotlarni boshqarishda oddiy va samarali yondashuvni taqdim etadi. Har bir voqea va holat uchun alohida metodlar va klassenlar yaratilgan, bu esa kodni o'qish va boshqarishni osonlashtiradi.
+- **Error handling**: Kodda xatoliklarni boshqarish uchun `try-catch` bloklari va `result.fold` metodidan foydalanilgan. Bu yondashuv xatoliklarni aniq ko'rsatib, foydalanuvchiga mos xabarlarni beradi.
+- **UseCase integration**: UseCase'lar yordamida `AlbumsBloc` faqat biznes logikasini ishlatadi va UI qatlamidan ajratilgan. Bu esa **Clean Architecture**'ga muvofiqdir va testlarni osonlashtiradi.
+- **Asinxron ma'lumotlar**: Ma'lumotlarni olish asinxron ravishda amalga oshiriladi, bu esa UI responsivligini ta'minlaydi va yirik ma'lumotlar bilan ishlashda samarali bo'ladi.
