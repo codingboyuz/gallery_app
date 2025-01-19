@@ -42,7 +42,7 @@ Yuqaridagi rasmda ko'rishingiz mumkin bo'lganidek, arxitekturada 3 ta qatlam mav
 **Data**, **Domain** va **Presentation**. Har birining o'z maqsadi bor va faqat yuqoridagi oqimga
 ko'ra o'zaro
 aloqada bo'lishlari mumkin;
-**Data** va **Presentation** faqat Domain yordamida bir-biri bilan gaplashishlari mumkin
+`**Data**` va `**Presentation**` faqat Domain yordamida bir-biri bilan gaplashishlari mumkin
 
 
 
