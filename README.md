@@ -201,12 +201,14 @@ manbalarini abstraksiyalash orqali kodni modulli va oson boshqariladigan qiladi.
 - `AlbumsRepository` interfeysini yaratamiz. U qanday funksiyalar kerakligini belgilaydi,
   masalan:
 <br>
+
   ```dart
   abstract interface class AlbumsRepository {
     Future<Either<Failure, List<AssetPathEntity>>> loadAlbums();
     Future<Either<Failure, List<AssetEntity>>> loadAlbumsItem(AssetPathEntity entity);
   }
   ```
+  
 <br>
   
   - Bu UI qatlamiga faqat ma'lumot olish uchun qanday interfeyslar mavjudligini bildiradi.
