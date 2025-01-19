@@ -355,7 +355,7 @@ Shu tariqa, `Either<Failure, Type>` yordamida quyidagi holatlarni aniq ko'rsatis
  4. Agar xato bo'lsa, **Left (failure)** qiymat qaytaradi.
 <br>
 
-# Presentation **`Bloc` , `Event` , `State` **
+# Presentation **`Bloc`  `Event`  `State`**
 
 
 ###  ** Bloc `AlbumsBloc` Klassining Asosiy Strukturası: **
@@ -444,7 +444,7 @@ Shu tariqa, `Either<Failure, Type>` yordamida quyidagi holatlarni aniq ko'rsatis
 
 ---
 
-###  **Blocning Holatlari (State):**
+###  ** Blocning Holatlari (State): **
 
 - **`AlbumsInitial`**: Dastlabki holat, Bloc hali ishga tushmagan.
 - **`AlbumsLoading`**: Ma'lumot olish jarayoni davom etmoqda.
