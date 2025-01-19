@@ -26,20 +26,22 @@ TDD yana bir ustunligi ko'dlarni pattrinlarga bo'linishi bu ko'dni o'shni osonla
 kegingi dasturchi yoki jamoa bilan ishlagada hechqanday qiyinchliklarsiz loyhani davom etiradi
 
 ### Loyha strukturasi (papkalar joylashuvi):
+<br>
 
-[//]: # (<img src="assets/readme/structure.webp" alt="folder" width="300"/>)
 ![foldr](assets/readme/structure.webp)
+<br>
 
 Struktura shu ko'rinishda bo'ladi hohishga ko'ra boshaqa papkalar ochish
 ham mumkin muhumi ko'd strukturasi buzulmasligi lozim;
 
 ### TDD Malumot oqimi:
+<br>
 
-[//]: # (<img src="assets/readme/tdd.webp" alt="folder" width="300"/>)
 ![tdd](assets/readme/tdd.webp)
+<br>
 
-Yuqaridagi rasmda ko'rishingiz mumkin bo'lganidek, arxitekturada 3 ta qatlam mavjud:
-**Data**, **Domain** va **Presentation**. Har birining o'z maqsadi bor va faqat yuqoridagi oqimga
+Yuqaridagi rasmda ko'rishingiz mumkin  arxitekturada 3 ta qatlam mavjud: 
+`**Data**`,`**Domain**` va `**Presentation**`. Har birining o'z maqsadi bor va faqat yuqoridagi oqimga
 ko'ra o'zaro
 aloqada bo'lishlari mumkin;
 `**Data**` va `**Presentation**` faqat Domain yordamida bir-biri bilan gaplashishlari mumkin
