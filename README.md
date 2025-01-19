@@ -51,9 +51,8 @@ aloqada bo'lishlari mumkin;
 
 
 # Keling endi men o'z loyhamni tushun tirib o'taman
-**Bu loiyhada**-api bilan ishlanmagani uchun bizga `**Remote Data Sources**` mavjud emas bizga  `**Local Data Sources**` o'zi yetarli bo'ladi
-Yuqoridagi kodlaringizni qisqacha tahlil qilib, nima ish bajarayotgani va nima uchun **abstract class** bilan ishlayotganingizni tushuntirib beraman.
-bizda **`Local Data Sources`** bilan ishlash uchun ushbu `abstract class` mavjud 👇🏻
+**Bu loiyhada**-api bilan ishlanmagani uchun bizga `**Remote Data Sources**` mavjud emas bizga  `**Local Data Sources**`ni o'zi yetarli bo'ladi.
+bizda **`Local Data Sources`** bilan ishlash uchun ushbu `abstract class AlbumsLocalDataSource` mavjud 👇🏻
 
 **`AlbumsLocalDataSource` nima qiladi?**
 - Albomlar va albom ichidagi fayllarni boshqaradi.
