@@ -37,14 +37,23 @@ ham mumkin muhumi ko'd strukturasi buzulmasligi lozim;
 ### TDD Malumot oqimi:
 <br>
 
-![tdd](assets/readme/tdd.webp)
+<div align="center">
+  <img src="assets/readme/tdd.webp" alt="tdd" />
+</div>
+
 <br>
 
 Yuqaridagi rasmda ko'rishingiz mumkin  arxitekturada 3 ta qatlam mavjud: 
 `**Data**`,`**Domain**` va `**Presentation**`. Har birining o'z maqsadi bor va faqat yuqoridagi oqimga
 ko'ra o'zaro
 aloqada bo'lishlari mumkin;
-`**Data**` va `**Presentation**` faqat Domain yordamida bir-biri bilan gaplashishlari mumkin
+`**Data**` va `**Presentation**` faqat Domain yordamida bir-biri bilan aloqa qilishi mumkin
+
+
+# Keling endi men o'z loyhamni tushun tirib o'taman
+
+
+
 
 
 
