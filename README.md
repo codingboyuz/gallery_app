@@ -66,23 +66,23 @@ mavjud 👇🏻
 
 ---
 
-```dart
-import 'package:photo_manager/photo_manager.dart';
-
-/// Rasmlar va albomlarni olish uchun abstrakt class.
-/// Bu interfeysni implementatsiya qiluvchi classlar quyidagi funksiyalarni bajarishi kerak:
-/// 1. `loadAlbums`: Qurilmadagi mavjud albomlarni yuklash.
-/// 2. `loadAlbumsItem`: Berilgan albomning ichidagi media fayllarni yuklash.
-abstract interface class AlbumsLocalDataSource {
-  /// Qurilmadagi barcha albomlarni yuklaydi.
-  /// [Future] qaytaradi, u [List<AssetPathEntity>] ichida albomlar ro'yxatini saqlaydi.
-  Future<List<AssetPathEntity>> loadAlbums();
-
-  /// Berilgan albomga tegishli media fayllarni yuklaydi.
-  /// [Future] qaytaradi, u [List<AssetEntity>] ichida fayllar ro'yxatini saqlaydi.
-  Future<List<AssetEntity>> loadAlbumsItem(AssetPathEntity selectedAlbum);
-}
-```
+   ```dart
+   import 'package:photo_manager/photo_manager.dart';
+   
+   /// Rasmlar va albomlarni olish uchun abstrakt class.
+   /// Bu interfeysni implementatsiya qiluvchi classlar quyidagi funksiyalarni bajarishi kerak:
+   /// 1. `loadAlbums`: Qurilmadagi mavjud albomlarni yuklash.
+   /// 2. `loadAlbumsItem`: Berilgan albomning ichidagi media fayllarni yuklash.
+   abstract interface class AlbumsLocalDataSource {
+     /// Qurilmadagi barcha albomlarni yuklaydi.
+     /// [Future] qaytaradi, u [List<AssetPathEntity>] ichida albomlar ro'yxatini saqlaydi.
+     Future<List<AssetPathEntity>> loadAlbums();
+   
+     /// Berilgan albomga tegishli media fayllarni yuklaydi.
+     /// [Future] qaytaradi, u [List<AssetEntity>] ichida fayllar ro'yxatini saqlaydi.
+     Future<List<AssetEntity>> loadAlbumsItem(AssetPathEntity selectedAlbum);
+   }
+   ```
 
 ### **Abstract Class (Interfeys) Nega Kerak?**
 
@@ -110,53 +110,53 @@ Abstract class yozishdan maqsad:
 ---
 Endi bu `abstract class AlbumsLocalDataSource` dan meros olamiz
 
-```dart
-// Asosiy implementatsiya class, bu yerda lokal media ma'lumotlarini olish logikasi yozilgan.
-class AlbumsLocalDataSourceImpl implements AlbumsLocalDataSource {
-  /// Qurilmadagi mavjud albomlarni yuklaydi.
-  /// Agar foydalanuvchi media fayllarga ruxsat bergan bo'lsa, albomlar ro'yxatini qaytaradi.
-  /// Aks holda, foydalanuvchini sozlamalar sahifasiga yo'naltiradi.
-  @override
-  Future<List<AssetPathEntity>> loadAlbums() async {
-    // Media fayilariga kirish uchin ruxsat so'raymiz.
-    var permission = await PhotoManager.requestPermissionExtend();
-
-    // Albomlar ro'yxatini saqlash uchun bo'sh ro'yxat yaratamiz.
-    List<AssetPathEntity> albumList = [];
-
-    if (permission.isAuth) {
-      // Agar ruxsat berilgan bo'lsa, albomlarni yuklaymiz.
-      albumList = await PhotoManager.getAssetPathList(
-        type: RequestType.common, // Rasmlar va videolarni yuklaydi.
-      );
-    } else {
-      // Agar ruxsat berilmagan bo'lsa, foydalanuvchini sozlamalar oynasiga "Permission setting" o'tkazamiz.
-      PhotoManager.openSetting();
-    }
-
-    // Albomlar ro'yxatini qaytaramiz.
-    return albumList;
-  }
-
-  /// Berilgan albomning ichidagi media fayllarni yuklaydi.
-  /// [selectedAlbum] - bu albom linki yani albom joylashgan joyi.
-  /// Albom ichidagi barcha fayllarni qaytaradi.
-  @override
-  Future<List<AssetEntity>> loadAlbumsItem(AssetPathEntity selectedAlbum) async {
-    // Albom ichidagi media fayllar sonini aniqlaymiz.
-    int assetCount = await selectedAlbum.assetCountAsync;
-
-    // Media fayllarni yuklaymiz (0-dan boshlab to'liq ro'yxatni).
-    List<AssetEntity> assetList = await selectedAlbum.getAssetListRange(
-      start: 0, // Boshlanish indeksi.
-      end: assetCount, // Albomdagi fayllar soni.
-    );
-
-    // Media fayllar ro'yxatini qaytaramiz.
-    return assetList;
-  }
-}
-```
+   ```dart
+   // Asosiy implementatsiya class, bu yerda lokal media ma'lumotlarini olish logikasi yozilgan.
+   class AlbumsLocalDataSourceImpl implements AlbumsLocalDataSource {
+     /// Qurilmadagi mavjud albomlarni yuklaydi.
+     /// Agar foydalanuvchi media fayllarga ruxsat bergan bo'lsa, albomlar ro'yxatini qaytaradi.
+     /// Aks holda, foydalanuvchini sozlamalar sahifasiga yo'naltiradi.
+     @override
+     Future<List<AssetPathEntity>> loadAlbums() async {
+       // Media fayilariga kirish uchin ruxsat so'raymiz.
+       var permission = await PhotoManager.requestPermissionExtend();
+   
+       // Albomlar ro'yxatini saqlash uchun bo'sh ro'yxat yaratamiz.
+       List<AssetPathEntity> albumList = [];
+   
+       if (permission.isAuth) {
+         // Agar ruxsat berilgan bo'lsa, albomlarni yuklaymiz.
+         albumList = await PhotoManager.getAssetPathList(
+           type: RequestType.common, // Rasmlar va videolarni yuklaydi.
+         );
+       } else {
+         // Agar ruxsat berilmagan bo'lsa, foydalanuvchini sozlamalar oynasiga "Permission setting" o'tkazamiz.
+         PhotoManager.openSetting();
+       }
+   
+       // Albomlar ro'yxatini qaytaramiz.
+       return albumList;
+     }
+   
+     /// Berilgan albomning ichidagi media fayllarni yuklaydi.
+     /// [selectedAlbum] - bu albom linki yani albom joylashgan joyi.
+     /// Albom ichidagi barcha fayllarni qaytaradi.
+     @override
+     Future<List<AssetEntity>> loadAlbumsItem(AssetPathEntity selectedAlbum) async {
+       // Albom ichidagi media fayllar sonini aniqlaymiz.
+       int assetCount = await selectedAlbum.assetCountAsync;
+   
+       // Media fayllarni yuklaymiz (0-dan boshlab to'liq ro'yxatni).
+       List<AssetEntity> assetList = await selectedAlbum.getAssetListRange(
+         start: 0, // Boshlanish indeksi.
+         end: assetCount, // Albomdagi fayllar soni.
+       );
+   
+       // Media fayllar ro'yxatini qaytaramiz.
+       return assetList;
+     }
+   }
+   ```
 
 #### **Implementatsiya: `AlbumsLocalDataSourceImpl`**
 
@@ -200,17 +200,22 @@ manbalarini abstraksiyalash orqali kodni modulli va oson boshqariladigan qiladi.
 1. **Abstraktsiya yaratish:**
 - `AlbumsRepository` interfeysini yaratamiz. U qanday funksiyalar kerakligini belgilaydi,
   masalan:
+<br>
   ```dart
   abstract interface class AlbumsRepository {
     Future<Either<Failure, List<AssetPathEntity>>> loadAlbums();
     Future<Either<Failure, List<AssetEntity>>> loadAlbumsItem(AssetPathEntity entity);
   }
   ```
+<br>
+  
   - Bu UI qatlamiga faqat ma'lumot olish uchun qanday interfeyslar mavjudligini bildiradi.
 
 2. **Implementatsiya:**
     - `AlbumsRepositoryImpl` orqali bu interfeysni amalga oshirasiz. Bu joyda lokal va tarmoq
       manbalaridan ma'lumot olish logikasi yoziladi:
+<br>
+   
    ```dart
    class AlbumsRepositoryImpl implements AlbumsRepository {
      //  AlbumsLocalDataSource konstruktor yordamida chaqiramiz
@@ -255,5 +260,5 @@ manbalarini abstraksiyalash orqali kodni modulli va oson boshqariladigan qiladi.
      }
    }
    ```
-   
+<br>
 ---
