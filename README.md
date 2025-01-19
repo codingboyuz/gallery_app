@@ -1048,7 +1048,7 @@ Failure failure = Failure(message: "Tarmoq so'rovi xatoligi.");
 
 ## Services
 
-Bu ikki finksiya `groupImagesByDate` , `dateFormat`  **abstract class AppServices** ichida joylashgan  
+Bu ikki funksiya `groupImagesByDate` , `dateFormat`  **abstract class AppServices** ichida joylashgan  
 
 <br>
 
@@ -1073,7 +1073,6 @@ static Map<String, List<AssetEntity>> groupImagesByDate(List<AssetEntity> images
 ```
 <br>
 
-**Tahlil**:
 - **Ma'lumot turi**: Ushbu metod `Map<String, List<AssetEntity>>` turidagi qiymatni qaytaradi, ya'ni sanalarga asoslangan ravishda tasvirlar (`AssetEntity` obyektlari) guruhlanadi.
 - **Foydalanuvchi maqsadi**: Tasvirlar ro'yxatini sana bo'yicha guruhlash.
 - **Qanday ishlaydi**:
@@ -1106,7 +1105,6 @@ static String dateFormat(String? dateString) {
 ```
 <br>
 
-**Tahlil**:
 
 - **Ma'lumot turi**: Ushbu metod `String` turidagi qiymatni qaytaradi, ya'ni sananing formatlangan ko'rinishini.
 - **Foydalanuvchi maqsadi**: Berilgan sana satrini o'zgartirib, uni kerakli formatda chiqarish.
@@ -1124,4 +1122,136 @@ static String dateFormat(String? dateString) {
 - `dateFormat` metodi esa sana satrini kerakli formatda chiqarish uchun ishlatiladi.
 - Ikki metod ham foydalanuvchiga tasvirlar va sana bilan ishlashda yordam beradigan funktsional imkoniyatlar taqdim etadi.
 
+## Routes
+Ushbu kod `AppPages` sinfini yaratadi, bu sinf ilovada ishlatiladigan sahifalar (routes) va ularning tegishli bloklarini (Blocs) boshqarish uchun javobgardir. Tahlil qilaylik:
 
+### 1. `AppPages` sinfi:
+
+#### 1.1. `observer` (RouteObserver)
+<br>
+
+```dart
+static final RouteObserver<Route> observer = RouteObserver();
+```
+<br>
+
+ `RouteObserver` — bu, ilovaning marshrut (yoki sahifa) o'zgarishlarini kuzatish uchun ishlatiladi. Masalan, sahifalar o'zgarganida yoki qayta ko'rsatilganda (push/pop) kuzatuvchi ishlatiladi.
+- **Foydalanuvchi maqsadi**: Sahifalar orasidagi o'zgarishlarni kuzatish va ilova tarixini boshqarish.
+
+#### 1.2. `history` (List<String>)
+<br>
+
+```dart
+static List<String> history = [];
+```
+<br>
+
+Bu ro'yxat, ilovaning tarixini saqlaydi, ya'ni foydalanuvchi qaysi sahifalardan o'tganligini saqlash uchun ishlatiladi.
+- **Foydalanuvchi maqsadi**: Ilova navigatsiyasining tarixini saqlash va unga murojaat qilish.
+
+#### 1.3. `routes()` (List<PageEntity>)
+<br>
+
+```dart
+static List<PageEntity> routes() {
+  return [
+    PageEntity(
+      path: AppRoutes.MAIN,
+      page: MainScreen(),
+      bloc: BlocProvider(create: (_) => MainBloc())
+    ),
+    PageEntity(
+      path: AppRoutes.GALLERY,
+      page: GalleryScreen(),
+      bloc: BlocProvider(create: (_) => GalleryBloc(mediaAssetsUseCase: getIt<MediaAssetsUseCase>()))
+    ),
+    PageEntity(
+      path: AppRoutes.ALBUMS,
+      page: AlbumsScreen(),
+      bloc: BlocProvider(create: (_) => AlbumsBloc(albumsItemUseCase: getIt<AlbumsItemUseCase>(), albumsUseCase: getIt<AlbumsUseCase>()))
+    ),
+  ];
+}
+```-
+<br>
+Bu metod ilovadagi barcha sahifalar va ular bilan bog'liq `BlocProvider`lar ro'yxatini qaytaradi. Har bir `PageEntity` obyekti sahifaning `path` (yo'l), sahifa widgeti (`page`), va sahifa bilan bog'liq `bloc`ni o'z ichiga oladi.
+- **Foydalanuvchi maqsadi**: Ilovadagi barcha sahifalar va ularning `Bloc`larini ro'yxatga olish, navigatsiya qilish va kerakli sahifalarni ko'rsatish.
+
+#### 1.4. `blocer()` (List<dynamic>)
+<br>
+
+```dart
+static List<dynamic> blocer(BuildContext context) {
+  List<dynamic> blocerList = <dynamic>[];
+
+  for (var blocer in routes()) {
+    blocerList.add(blocer.bloc);
+  }
+  return blocerList;
+}
+```
+<br>
+
+ Bu metod `routes()` ro'yxatidan har bir sahifaning `bloc`ini olib, ularni alohida ro'yxatda (List) saqlaydi va qaytaradi. Bu metod ilovadagi barcha `Bloc`larni olish uchun ishlatiladi.
+- **Foydalanuvchi maqsadi**: Barcha kerakli `Bloc`larni olish va ularni boshqarish.
+
+#### 1.5. `generateRouteSettings()` (MaterialPageRoute?)
+<br>
+
+```dart
+static MaterialPageRoute? generateRouteSettings(RouteSettings settings) {
+  if (settings.name != null) {
+    var result = routes().where((element) => element.path == settings.name);
+    if (result.isNotEmpty) {
+      if (result.first.path == AppRoutes.initialRoute) {
+        return MaterialPageRoute<void>(
+            builder: (_) => MainScreen(), settings: settings);
+      }
+      return MaterialPageRoute<void>(
+          builder: (_) => result.first.page, settings: settings);
+    }
+  }
+  return null;
+}
+```
+<br>
+
+Bu metod dinamik marshrutlashni boshqaradi. `RouteSettings`dan kelgan `name` qiymati bo'yicha sahifa topiladi va kerakli sahifa yuklanadi.
+    - Agar `settings.name` `AppRoutes.MAIN` kabi bir yo'lni ko'rsatsa, ilova `MainScreen`ni ochadi.
+    - Agar `settings.name` boshqa bir yo'lni ko'rsatsa, `routes()` ro'yxatidan mos sahifa topiladi va yuklanadi.
+    - Agar sahifa topilmasa, `null` qaytariladi.
+- **Foydalanuvchi maqsadi**: Dinamik ravishda sahifalarni yuklash va marshrutlarni boshqarish.
+
+---
+
+### 2. `PageEntity` sinfi:
+<br>
+
+```dart
+class PageEntity<T> {
+  String path;
+  Widget page;
+  dynamic bloc;
+
+  PageEntity({
+    required this.path,
+    required this.page,
+    required this.bloc,
+  });
+}
+```
+<br>
+
+**`PageEntity`** — bu sahifa va uning tegishli `bloc`ini saqlash uchun ishlatiladigan oddiy sinf.
+    - `path`: Sahifaning yo'li (masalan, `AppRoutes.MAIN`).
+    - `page`: Sahifa widgeti (masalan, `MainScreen`).
+    - `bloc`: Sahifa bilan bog'liq `Bloc` (masalan, `MainBloc`).
+- **Foydalanuvchi maqsadi**: Har bir sahifa, uning yo'li va tegishli `Bloc`ini saqlash.
+
+### Xulosa:
+- **AppPages** sinfi ilovadagi sahifalar va ularning `Bloc`larini boshqaradi.
+- **routes()** metodi sahifalar ro'yxatini yaratadi va kerakli `Bloc`lar bilan qaytaradi.
+- **generateRouteSettings()** metodi dinamik marshrutlashni boshqaradi.
+- **blocer()** metodi ilovadagi barcha `Bloc`larni qaytaradi.
+
+Bu tizim sahifalar va ularning kerakli holatlarini boshqarishda yordam beradi va ilovadagi marshrutlarni dinamik ravishda boshqarishni osonlashtiradi.
