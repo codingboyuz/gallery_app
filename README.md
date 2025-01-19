@@ -1046,4 +1046,82 @@ Failure failure = Failure(message: "Tarmoq so'rovi xatoligi.");
 ```
 <br>
 
+## Services
+
+Bu ikki finksiya `groupImagesByDate` , `dateFormat`  **abstract class AppServices** ichida joylashgan  
+
+<br>
+
+### 1. `groupImagesByDate` metodi:
+<br>
+
+```dart
+static Map<String, List<AssetEntity>> groupImagesByDate(List<AssetEntity> images) {
+  Map<String, List<AssetEntity>> groupedImages = {};
+
+  for (var image in images) {
+    // Sana faqat yili, oyi va kuni
+    String date = image.createDateTime.toLocal().toString().split(' ')[0];
+    if (groupedImages[date] == null) {
+      groupedImages[date] = [];
+    }
+    groupedImages[date]!.add(image);
+  }
+
+  return groupedImages;
+}
+```
+<br>
+
+**Tahlil**:
+- **Ma'lumot turi**: Ushbu metod `Map<String, List<AssetEntity>>` turidagi qiymatni qaytaradi, ya'ni sanalarga asoslangan ravishda tasvirlar (`AssetEntity` obyektlari) guruhlanadi.
+- **Foydalanuvchi maqsadi**: Tasvirlar ro'yxatini sana bo'yicha guruhlash.
+- **Qanday ishlaydi**:
+    - `image.createDateTime.toLocal().toString().split(' ')[0]` qator yordamida tasvirning yaratilgan sanasi olinadi va faqat yili, oyi va kuni olinadi (`YYYY-MM-DD` formatida).
+    - `groupedImages` xaritasida sanaga asoslangan guruhlar yaratilib, har bir guruhga mos tasvirlar qo'shiladi.
+    - `groupedImages` xaritasi, sanalar va ular bilan bog'langan tasvirlar ro'yxatini o'z ichiga oladi.
+
+**Misol**: Agar `images` ro'yxatida 3 ta tasvir bo'lsa va ular turli sanalarda bo'lsa, metod ularni har bir sanaga mos ravishda guruhlaydi.
+
+### 2. `dateFormat` metodi:
+<br>
+
+```dart
+static String dateFormat(String? dateString) {
+  if (dateString == null || dateString.isEmpty) {
+    return 'Unknown Date'; // Default qiymat
+  }
+
+  try {
+    // Stringni DateTime obyektiga o'zgartirish
+    DateTime date = DateTime.parse(dateString);
+
+    // Sana formatlash
+    return DateFormat('MMM dd, yyyy').format(date);
+  } catch (e) {
+    // Agar format noto'g'ri bo'lsa
+    return 'Invalid Date';
+  }
+}
+```
+<br>
+
+**Tahlil**:
+
+- **Ma'lumot turi**: Ushbu metod `String` turidagi qiymatni qaytaradi, ya'ni sananing formatlangan ko'rinishini.
+- **Foydalanuvchi maqsadi**: Berilgan sana satrini o'zgartirib, uni kerakli formatda chiqarish.
+- 
+- **Qanday ishlaydi**:
+    - Agar `dateString` `null` yoki bo'sh bo'lsa, metod `'Unknown Date'` matnini qaytaradi.
+    - Sana stringi `DateTime.parse(dateString)` yordamida `DateTime` obyektiga aylantiriladi.
+    - `DateFormat('MMM dd, yyyy').format(date)` yordamida sana kerakli formatda (masalan: `Jan 01, 2025`) qaytariladi.
+    - Agar sana noto'g'ri formatda bo'lsa, metod `'Invalid Date'` xatolik xabarini qaytaradi.
+
+**Misol**: Agar `dateString` `2025-01-01T12:00:00Z` bo'lsa, metod `'Jan 01, 2025'` natijasini qaytaradi.
+
+### Xulosa:
+- `groupImagesByDate` metodi tasvirlarni sanaga qarab guruhlash uchun ishlatiladi.
+- `dateFormat` metodi esa sana satrini kerakli formatda chiqarish uchun ishlatiladi.
+- Ikki metod ham foydalanuvchiga tasvirlar va sana bilan ishlashda yordam beradigan funktsional imkoniyatlar taqdim etadi.
+
 
