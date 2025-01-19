@@ -26,6 +26,7 @@ TDD yana bir ustunligi ko'dlarni pattrinlarga bo'linishi bu ko'dni o'shni osonla
 kegingi dasturchi yoki jamoa bilan ishlagada hechqanday qiyinchliklarsiz loyhani davom etiradi
 
 ### Loyha strukturasi (papkalar joylashuvi):
+
 <br>
 
 ![foldr](assets/readme/structure.webp)
@@ -35,6 +36,7 @@ Struktura shu ko'rinishda bo'ladi hohishga ko'ra boshaqa papkalar ochish
 ham mumkin muhumi ko'd strukturasi buzulmasligi lozim;
 
 ### TDD Malumot oqimi:
+
 <br>
 
 <div align="center" style="background-color: #ffffff; padding: 10px; display: inline-block;">
@@ -43,22 +45,27 @@ ham mumkin muhumi ko'd strukturasi buzulmasligi lozim;
 
 <br>
 
-Yuqaridagi rasmda ko'rishingiz mumkin  arxitekturada 3 ta qatlam mavjud: 
-`**Data**`,`**Domain**` va `**Presentation**`. Har birining o'z maqsadi bor va faqat yuqoridagi oqimga
+Yuqaridagi rasmda ko'rishingiz mumkin arxitekturada 3 ta qatlam mavjud:
+`**Data**`,`**Domain**` va `**Presentation**`. Har birining o'z maqsadi bor va faqat yuqoridagi
+oqimga
 ko'ra o'zaro
 aloqada bo'lishlari mumkin;
 `**Data**` va `**Presentation**` faqat Domain yordamida bir-biri bilan aloqa qilishi mumkin
 
-
 # Keling endi men o'z loyhamni tushun tirib o'taman
-**Bu loiyhada**-api bilan ishlanmagani uchun bizga `**Remote Data Sources**` mavjud emas bizga  `**Local Data Sources**`ni o'zi yetarli bo'ladi.
-bizda **`Local Data Sources`** bilan ishlash uchun ushbu `abstract class AlbumsLocalDataSource` mavjud 👇🏻
+
+**Bu loiyhada**-api bilan ishlanmagani uchun bizga `**Remote Data Sources**` mavjud emas
+bizga  `**Local Data Sources**`ni o'zi yetarli bo'ladi.
+bizda **`Local Data Sources`** bilan ishlash uchun ushbu `abstract class AlbumsLocalDataSource`
+mavjud 👇🏻
 
 ### **`AlbumsLocalDataSource` nima qiladi?**
+
 - Albomlar va albom ichidagi fayllarni boshqaradi.
 - Foydalanuvchi ruxsatlarini tekshiradi va media fayllarga kirishni ta'minlaydi.
 
 ---
+
 ```dart
 import 'package:photo_manager/photo_manager.dart';
 
@@ -76,21 +83,29 @@ abstract interface class AlbumsLocalDataSource {
   Future<List<AssetEntity>> loadAlbumsItem(AssetPathEntity selectedAlbum);
 }
 ```
+
 ### **Abstract Class (Interfeys) Nega Kerak?**
+
 Abstract class yozishdan maqsad:
+
 1. **Modullarni ajratish va yanada aniq struktura yaratish:**
-   - `AlbumsLocalDataSource` — bu interfeys bo'lib, **faqatgina funksiyalarni e'lon qiladi**. Bu esa implementatsiyani (asosiy kodni) boshqacha yozishga imkon beradi.
-   - Sizning implementatsiyangiz (`AlbumsLocalDataSourceImpl`) esa interfeysdagi funksiyalarni haqiqiy hayotda qanday ishlashini ko'rsatadi.
+    - `AlbumsLocalDataSource` — bu interfeys bo'lib, **faqatgina funksiyalarni e'lon qiladi**. Bu
+      esa implementatsiyani (asosiy kodni) boshqacha yozishga imkon beradi.
+    - Sizning implementatsiyangiz (`AlbumsLocalDataSourceImpl`) esa interfeysdagi funksiyalarni
+      haqiqiy hayotda qanday ishlashini ko'rsatadi.
 
 2. **Moslashuvchanlik (Flexibility):**
-   - Agar boshqa turdagi media manager kutubxonasiga (masalan, boshqa kutubxona yoki backend) o'tmoqchi bo'lsangiz, faqat yangi implementatsiya yozasiz.
-   - Interfeys orqali boshqa qismdagi kodga ta'sir qilmasdan, yangi implementatsiya ishlatiladi.
+    - Agar boshqa turdagi media manager kutubxonasiga (masalan, boshqa kutubxona yoki backend)
+      o'tmoqchi bo'lsangiz, faqat yangi implementatsiya yozasiz.
+    - Interfeys orqali boshqa qismdagi kodga ta'sir qilmasdan, yangi implementatsiya ishlatiladi.
 
 3. **Kodni o'qilishi va testlanishini osonlashtirish:**
-   - Abstract class bilan ishlaganda, ilova logikasi toza va tushunarli bo'ladi. Har bir sinf o'z vazifasini bajaradi va bir joyga haddan tashqari ko'p kod yozilmaydi.
+    - Abstract class bilan ishlaganda, ilova logikasi toza va tushunarli bo'ladi. Har bir sinf o'z
+      vazifasini bajaradi va bir joyga haddan tashqari ko'p kod yozilmaydi.
 
 4. **Jamoaviy ishlashda yordam:**
-   - Jamoangizdagi boshqa dasturchilar sizning abstract classingizdan foydalanib, uning ustiga boshqa implementatsiyalar yozishi yoki turli modullarga ulanishi mumkin.
+    - Jamoangizdagi boshqa dasturchilar sizning abstract classingizdan foydalanib, uning ustiga
+      boshqa implementatsiyalar yozishi yoki turli modullarga ulanishi mumkin.
 
 ---
 Endi bu `abstract class AlbumsLocalDataSource` dan meros olamiz
@@ -103,7 +118,7 @@ class AlbumsLocalDataSourceImpl implements AlbumsLocalDataSource {
   /// Aks holda, foydalanuvchini sozlamalar sahifasiga yo'naltiradi.
   @override
   Future<List<AssetPathEntity>> loadAlbums() async {
-     // Media fayilariga kirish uchin ruxsat so'raymiz.
+    // Media fayilariga kirish uchin ruxsat so'raymiz.
     var permission = await PhotoManager.requestPermissionExtend();
 
     // Albomlar ro'yxatini saqlash uchun bo'sh ro'yxat yaratamiz.
@@ -127,8 +142,7 @@ class AlbumsLocalDataSourceImpl implements AlbumsLocalDataSource {
   /// [selectedAlbum] - bu albom linki yani albom joylashgan joyi.
   /// Albom ichidagi barcha fayllarni qaytaradi.
   @override
-  Future<List<AssetEntity>> loadAlbumsItem(
-      AssetPathEntity selectedAlbum) async {
+  Future<List<AssetEntity>> loadAlbumsItem(AssetPathEntity selectedAlbum) async {
     // Albom ichidagi media fayllar sonini aniqlaymiz.
     int assetCount = await selectedAlbum.assetCountAsync;
 
@@ -143,21 +157,104 @@ class AlbumsLocalDataSourceImpl implements AlbumsLocalDataSource {
   }
 }
 ```
+
 #### **Implementatsiya: `AlbumsLocalDataSourceImpl`**
-Bu sinf yuqoridagi interfeysning funksiyalarini **haqiqiy hayotda bajaradigan kodni** o'z ichiga oladi:
 
 1. **`loadAlbums()`**:
-   - Media fayllarga ruxsat so'raydi (`PhotoManager.requestPermissionExtend`).
-   - Ruxsat berilgan taqdirda qurilmadagi barcha albomlarni qaytaradi (`PhotoManager.getAssetPathList` yordamida).
-   - Agar foydalanuvchi ruxsat bermasa, `PhotoManager.openSetting` orqali ruxsat olish oynasini ochadi.
+    - Media fayllarga ruxsat so'raydi (`PhotoManager.requestPermissionExtend`).
+    - Ruxsat berilgan taqdirda qurilmadagi barcha albomlarni
+      qaytaradi (`PhotoManager.getAssetPathList` yordamida).
+    - Agar foydalanuvchi ruxsat bermasa, `PhotoManager.openSetting` orqali ruxsat olish oynasini
+      ochadi.
 
 2. **`loadAlbumsItem(AssetPathEntity selectedAlbum)`**:
-   - Berilgan albomning ichidagi barcha fayllarni yuklaydi (`selectedAlbum.getAssetListRange` yordamida).
-   - Bu funksiya faqatgina tanlangan albom ichidagi fayllarni olib keladi.
+    - Berilgan albomning ichidagi barcha fayllarni yuklaydi (`selectedAlbum.getAssetListRange`
+      yordamida).
+    - Bu funksiya faqatgina tanlangan albom ichidagi fayllarni olib keladi.
 
+---
+# Repository haqida
+---
 
+### Repository: Nima uchun kerak?
 
+**Repository** - bu dastur arxitekturasida **ma'lumotlar qatlamini boshqaruvchi
+va ma'lumot manbalari (masalan, lokal ma'lumotlar bazasi yoki API) bilan
+UI o'rtasida ko'prik bo'lib ishlovchi qatlamdir**. Repository, ma'lumotlar
+manbalarini abstraksiyalash orqali kodni modulli va oson boshqariladigan qiladi.
 
+---
 
+1. **Kodning o'qiluvchanligini oshirish:**
+    - Ma'lumotlar olish logikasi bir joyda markazlashtiriladi.
+    - UI qatlami faqat repository orqali ishlaydi, bu esa kodni osonroq boshqarishga imkon beradi.
 
+2. **Testlashni osonlashtirish:**
+    - Repository orqali ma'lumotlarni osonlikcha sinab ko'rish va ularni soxta manbalar bilan
+      almashtirish mumkin.
+    - Bu **Unit Test** va **Integration Test**larni bajarishni yengillashtiradi.
 
+---
+
+### Repository Loyihada Qanday Ishlaydi?
+
+1. **Abstraktsiya yaratish:**
+    - `AlbumsRepository` interfeysini yaratamiz. U qanday funksiyalar kerakligini belgilaydi,
+      masalan:
+      ```dart
+      abstract interface class AlbumsRepository {
+        Future<Either<Failure, List<AssetPathEntity>>> loadAlbums();
+        Future<Either<Failure, List<AssetEntity>>> loadAlbumsItem(AssetPathEntity entity);
+      }
+      ```
+    - Bu UI qatlamiga faqat ma'lumot olish uchun qanday interfeyslar mavjudligini bildiradi.
+
+2. **Implementatsiya:**
+    - `AlbumsRepositoryImpl` orqali bu interfeysni amalga oshirasiz. Bu joyda lokal va tarmoq
+      manbalaridan ma'lumot olish logikasi yoziladi:
+   ```dart
+   class AlbumsRepositoryImpl implements AlbumsRepository {
+     //  AlbumsLocalDataSource konstruktor yordamida chaqiramiz
+     final AlbumsLocalDataSource mediaLocalDataSource;
+   
+     // konstruktor
+     AlbumsRepositoryImpl(this.mediaLocalDataSource);
+   
+     @override
+     Future<Either<Failure, List<AssetPathEntity>>> loadAlbums() async {
+       try {
+   
+         final result = await mediaLocalDataSource.loadAlbums();//mediaLocalDataSource chaqiramiz va kelgan ma'lumotni resultga tenglaymiz
+         // agar result null bo'lmasa yani bo'sh bo'lsa , biron qiymatga ega bo'lsa shart bajariladi
+         if (result.isNotEmpty) {
+           // dastur bu qisimga kirsa demak ui kegini etabga malumot success holatda kelganini bildirish uchun
+           // Rigth(result) qilib qaytaramiz
+           return Right(result);
+         } else {
+           // Aksholda ma'lumot  error bo'lsa yoki hechqanday ma'lumot bo'lmasa
+           // Left() deb error holatni bildiramiz
+           return Left(Failure(message: "Image Null"));
+         }
+       } catch (e) {
+         return Left(Failure(message: e.toString())); // ko'zda tutilmagan hatoliklar uchun
+       }
+     }
+   
+     // bu finkskiyadaham yuqoridagi funksiya kabi bo'lmoqda
+     @override
+     Future<Either<Failure, List<AssetEntity>>> loadAlbumsItem(AssetPathEntity entity) async{
+       try {
+         final result = await mediaLocalDataSource.loadAlbumsItem(entity);
+         if (result.isNotEmpty) {
+           return Right(result);
+         } else {
+           return Left(Failure(message: "Album Null"));
+         }
+       } catch (e) {
+         return Left(Failure(message: e.toString()));
+       }
+     }
+   }
+   ```
+   
+---
