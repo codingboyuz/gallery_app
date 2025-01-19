@@ -355,13 +355,10 @@ Shu tariqa, `Either<Failure, Type>` yordamida quyidagi holatlarni aniq ko'rsatis
  4. Agar xato bo'lsa, **Left (failure)** qiymat qaytaradi.
 <br>
 
-# Presentation qismi haqaqida
+# Presentation **`Bloc` , `Event` , `State` **
 
-<br>
 
-## Bloc qismi
-
-###  **`AlbumsBloc` Klassining Asosiy Strukturası:**
+###  ** Bloc `AlbumsBloc` Klassining Asosiy Strukturası:**
 
    ```dart
    class AlbumsBloc extends Bloc<AlbumsEvent, AlbumsState> {
