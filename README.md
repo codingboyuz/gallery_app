@@ -51,7 +51,7 @@ aloqada bo'lishlari mumkin;
 
 
 # Keling endi men o'z loyhamni tushun tirib o'taman
-**Bu loiyhada**-api bilan ishlanmagani uchun bizda `**Remote Data Sources**` mavjud emas bizga shuni o'zi yetarli bo'ladi `**Local Data Sources**` mavjud holos
+**Bu loiyhada**-api bilan ishlanmagani uchun bizga `**Remote Data Sources**` mavjud emas bizga  `**Local Data Sources**` o'zi yetarli bo'ladi
 Yuqoridagi kodlaringizni qisqacha tahlil qilib, nima ish bajarayotgani va nima uchun **abstract class** bilan ishlayotganingizni tushuntirib beraman.
 bizda **`Local Data Sources`** bilan ishlash uchun ushbu `abstract class` mavjud 👇🏻
 
