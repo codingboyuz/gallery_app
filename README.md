@@ -733,69 +733,67 @@ ma'lumotlarni ko'rsatish mumkin.
 
 - `AlbumsBloc`dan holatni olish va UI'ni qayta qurish.
 - `GetAlbumsEvent`ni yuborish orqali albomlar ma'lumotlarini yuklash boshlanadi.
-  <br>
+<br>
 
 ```dart
-BlocBuilder<AlbumsBloc, AlbumsState>
-(
-bloc: context.read<AlbumsBloc>()..add(GetAlbumsEvent()),
-builder: (context, state) {
-if (state is GalleryInitial) {
-return Center(
-child: Text(
-"Initial",
-style: TextStyle(fontSize: 50, color: Colors.red),
-),
-);
-}
-// loading holati
-if (state is AlbumsLoading) {
-return Center(
-child: CircularProgressIndicator(),
-);
-}
-// Success holati
-if (state is AlbumsSuccess) {
-// agar state yani holat AlbumsSuccess bo'lsa
-// state.data qilb malumot olinadi bu malumot AlbumsBloc dan keladi
-return CustomSliverAppBar(
-title: "Album",
-child: SliverList(
-delegate: SliverChildBuilderDelegate(
-childCount: 1,
-(context, index) {
-return GridView.builder(
-itemCount: state.data.length,
-shrinkWrap: true,
-physics: NeverScrollableScrollPhysics(),
-gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-crossAxisCount: 3,
-childAspectRatio: .8,
-crossAxisSpacing: 5,
-),
-itemBuilder: (context, index) {
-// kelganm ma'lumotlarni list ning index ni itemsOfAlbums ga beramiz va itemlar chiziladi
-AssetPathEntity album = state.data[index];
-return ItemsOfAlbumsWidget(
-album: album,
-);
-});
-}),
-));
-}
-if (state is AlbumsError) {
-Center(
-child: Text(
-"Error",
-style: TextStyle(fontSize: 50, color: Colors.red),
-),
-);
-}
-return Center(
-child: Text("Album"),
-);
-},
-);
+BlocBuilder<AlbumsBloc, AlbumsState>(bloc: context.read<AlbumsBloc>()..add(GetAlbumsEvent()),
+      builder: (context, state) {
+        if (state is GalleryInitial) {
+          return Center(
+            child: Text(
+              "Initial",
+              style: TextStyle(fontSize: 50, color: Colors.red),
+            ),
+          );
+        }
+        // loading holati
+        if (state is AlbumsLoading) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        // Success holati
+        if (state is AlbumsSuccess) {
+          // agar state yani holat AlbumsSuccess bo'lsa
+          // state.data qilb malumot olinadi bu malumot AlbumsBloc dan keladi
+          return CustomSliverAppBar(
+              title: "Album",
+              child: SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  childCount: 1,
+                        (context, index) {
+                  return GridView.builder(
+                      itemCount: state.data.length,
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        childAspectRatio: .8,
+                        crossAxisSpacing: 5,
+                      ),
+                      itemBuilder: (context, index) {
+                        // kelganm ma'lumotlarni list ning index ni itemsOfAlbums ga beramiz va itemlar chiziladi
+                        AssetPathEntity album = state.data[index];
+                        return ItemsOfAlbumsWidget(
+                          album: album,
+                        );
+                      });
+                }),
+              ));
+        }
+        if (state is AlbumsError) {
+          Center(
+            child: Text(
+              "Error",
+              style: TextStyle(fontSize: 50, color: Colors.red),
+            ),
+          );
+        }
+        return Center(
+          child: Text("Album"),
+        );
+      },
+    );
 ```
 
 <br>
@@ -806,19 +804,18 @@ child: Text("Album"),
 
 - Agar `GalleryInitial` holati bo'lsa, "Initial" matni ko'rsatiladi. Bu holat odatda dastur
   boshlanganda yoki ma'lumotlar hali mavjud bo'lmagan paytda bo'lishi mumkin.
-  <br>
+<br>
 
 ```dart
 if(state is GalleryInitial) {
-return Center(
-child: Text(
-"Initial",
-style: TextStyle(fontSize: 50, color: Colors.red),
-),
-);
-}
+          return Center(
+            child: Text(
+              "Initial",
+              style: TextStyle(fontSize: 50, color: Colors.red),
+            ),
+          );
+        }
 ```
-
 <br>
 
 **`state is AlbumsLoading`**:
@@ -829,17 +826,16 @@ style: TextStyle(fontSize: 50, color: Colors.red),
 
 ```dart
 // loading holati
-if (state is AlbumsLoading) {
-return Center(
-child: CircularProgressIndicator(),
-);
-}
+        if (state is AlbumsLoading) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
 ```
-
 <br>
 
 **`state is AlbumsSuccess`**:
-
+  
 - Agar albomlar muvaffaqiyatli yuklangan bo'lsa, `GridView.builder` yordamida albomlar ro'yxati ko'
   rsatiladi.
 - `CustomSliverAppBar` yordamida yuqori qismda albomlar nomi va yuklangan albomlar grid ko'rinishida
@@ -848,56 +844,53 @@ child: CircularProgressIndicator(),
 
 ```dart
 if (state is AlbumsSuccess) {
-// agar state yani holat AlbumsSuccess bo'lsa
-// state.data qilb malumot olinadi bu malumot AlbumsBloc dan keladi
-return CustomSliverAppBar(
-title: "Album",
-child: SliverList(
-delegate: SliverChildBuilderDelegate(
-childCount: 1,
-(context, index) {
-return GridView.builder(
-itemCount: state.data.length,
-shrinkWrap: true,
-physics: NeverScrollableScrollPhysics(),
-gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-crossAxisCount: 3,
-childAspectRatio: .8,
-crossAxisSpacing: 5,
-),
-itemBuilder: (context, index) {
-// kelganm ma'lumotlarni list ning index ni itemsOfAlbums ga beramiz va itemlar chiziladi
-AssetPathEntity album = state.data[index];
-return ItemsOfAlbumsWidget(
-album: album,
-);
-});
-}),
-));
-}
+          // agar state yani holat AlbumsSuccess bo'lsa
+          // state.data qilb malumot olinadi bu malumot AlbumsBloc dan keladi
+          return CustomSliverAppBar(
+              title: "Album",
+              child: SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  childCount: 1,
+                        (context, index) {
+                  return GridView.builder(
+                      itemCount: state.data.length,
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        childAspectRatio: .8,
+                        crossAxisSpacing: 5,
+                      ),
+                      itemBuilder: (context, index) {
+                        // kelganm ma'lumotlarni list ning index ni itemsOfAlbums ga beramiz va itemlar chiziladi
+                        AssetPathEntity album = state.data[index];
+                        return ItemsOfAlbumsWidget(
+                          album: album,
+                        );
+                      });
+                }),
+              ));
+        }
 ```
-
 <br>
 
 
-**`state is AlbumsError`**:
+  **`state is AlbumsError`**:
 
 - Agar xatolik yuzaga kelsa, "Error" matni ko'rsatiladi.
   **Default Holat**:
     - Agar boshqa holatlar mavjud bo'lmasa, "Album" matni ko'rsatiladi.
-      <br>
-
+<br>
 ```dart
 if (state is AlbumsError) {
-Center(
-child: Text(
-"Error",
-style: TextStyle(fontSize: 50, color: Colors.red),
-),
-);
-}
+          Center(
+            child: Text(
+              "Error",
+              style: TextStyle(fontSize: 50, color: Colors.red),
+            ),
+          );
+        }
 ```
-
 <br>
 
 
@@ -909,6 +902,7 @@ yuklanmoqda, muvaffaqiyatli yuklandi yoki xatolik yuzaga keldi.
 ### 🧩 1️⃣ **Class orqali yozilgan variant:**
 
 <br>
+
 
 ```dart
 class MediaEntityProvider extends StatelessWidget {
@@ -932,8 +926,8 @@ class MediaEntityProvider extends StatelessWidget {
 
 <br>
 
-### 🧩 2️⃣ **Funksiya orqali yozilgan variant:**
 
+### 🧩 2️⃣ **Funksiya orqali yozilgan variant:**
 <br>
 
 ```dart
@@ -948,7 +942,6 @@ Widget mediaEntityProvider(AssetEntity entity) {
   );
 }
 ```
-
 <br>
 
 ---
@@ -973,15 +966,13 @@ Widget mediaEntityProvider(AssetEntity entity) {
 
 - **Professional loyihalarda** `Widget`larni **klass shaklida** yozish tavsiya etiladi.
 - **Xato qilish ehtimolini kamaytiradi**, ayniqsa murakkab `state` boshqaruvi bilan ishlaganda.
-- `StatelessWidget` **Flutter lifecycle** (hayot tsikli) funksiyalaridan to'liq foydalanish imkonini
-  beradi.
+- `StatelessWidget` **Flutter lifecycle** (hayot tsikli) funksiyalaridan to'liq foydalanish imkonini beradi.
 
 ---
 
 ### ⚙️ **Performance farqi bormi?**
 
-💡 Ikkala usul ham ishlash tezligida **deyarli bir xil**. Ammo klass shaklida yozilgani **kuzatish (
-tracking)** va **optimallashtirish** uchun qulayroq bo'ladi.
+💡 Ikkala usul ham ishlash tezligida **deyarli bir xil**. Ammo klass shaklida yozilgani **kuzatish (tracking)** va **optimallashtirish** uchun qulayroq bo'ladi.
 
 ---
 
@@ -989,23 +980,19 @@ tracking)** va **optimallashtirish** uchun qulayroq bo'ladi.
 
 ✅ **Class shakli xavfsizroq**, chunki:
 
-1. **Flutter lifecycle** funksiyalari bilan ishlashga imkon beradi (`initState`, `dispose` va
-   boshqalar).
+1. **Flutter lifecycle** funksiyalari bilan ishlashga imkon beradi (`initState`, `dispose` va boshqalar).
 2. Parametrlarni `final` qilib o'rnatish mumkin, bu esa kodni o'zgarmas (immutable) qiladi.
 3. **Null safety** xatolaridan himoya qilish osonroq.
 
 ---
 
 ### 📋 **Xulosa:**
-
 Agar **bir marta ishlatiladigan oddiy widget** kerak bo'lsa, funksiya variantini ishlatish mumkin.
-Ammo **professional darajada, qayta foydalanish uchun yoki murakkab UI yaratishda** *
-*`StatelessWidget` yoki `StatefulWidget`** ishlatish **to'g'ri yo'l** hisoblanadi.
+Ammo **professional darajada, qayta foydalanish uchun yoki murakkab UI yaratishda** **`StatelessWidget` yoki `StatefulWidget`** ishlatish **to'g'ri yo'l** hisoblanadi.
 
 ---
 
 ### ✅ **Tavsiya qilinadigan toza va xavfsiz variant:**
-
 <br>
 
 ```dart
@@ -1044,213 +1031,151 @@ class Failure {
   Failure({required this.message});
 }
 ```
-
 <br>
 
-### Maqsad:
 
-- `Failure` sinfi dasturda xatoliklarni ifodalash uchun ishlatiladi. Masalan, biror operatsiya yoki
-  tarmoq so'rovi muvaffaqiyatsiz bo'lsa, ushbu sinf yordamida xatolikni saqlash va foydalanuvchiga
-  xatolik haqida ma'lumot berish mumkin. Bu xatolikni tizimga qaytarishda yoki foydalanuvchiga
-  ko'rsatishda yordam beradi.
+### Maqsad:
+- `Failure` sinfi dasturda xatoliklarni ifodalash uchun ishlatiladi. Masalan, biror operatsiya yoki tarmoq so'rovi muvaffaqiyatsiz bo'lsa, ushbu sinf yordamida xatolikni saqlash va foydalanuvchiga xatolik haqida ma'lumot berish mumkin. Bu xatolikni tizimga qaytarishda yoki foydalanuvchiga ko'rsatishda yordam beradi.
 
 ### Misol:
-
 Agar tarmoq so'rovi muvaffaqiyatsiz bo'lsa, siz `Failure` sinfini quyidagicha ishlatishingiz mumkin:
 <br>
 
 ```dart
-
 Failure failure = Failure(message: "Tarmoq so'rovi xatoligi.");
 ```
-
 <br>
 
 ## Services
 
-Bu ikki funksiya `groupImagesByDate` , `dateFormat`  **abstract class AppServices** ichida
-joylashgan
+Bu ikki funksiya `groupImagesByDate` , `dateFormat`  **abstract class AppServices** ichida joylashgan  
 
 <br>
 
 ### 1. `groupImagesByDate` metodi:
-
 <br>
 
 ```dart
-static Map<String, List<AssetEntity>> groupImagesByDate
-(
-List<AssetEntity> images) {
-Map<String, List<AssetEntity>> groupedImages = {};
+static Map<String, List<AssetEntity>> groupImagesByDate(List<AssetEntity> images) {
+  Map<String, List<AssetEntity>> groupedImages = {};
 
-for (var image in images) {
-// Sana faqat yili, oyi va kuni
-String date = image.createDateTime.toLocal().toString().split(' ')[0];
-if (groupedImages[date] == null) {
-groupedImages[date] = [];
-}
-groupedImages[date]!.add(image);
-}
+  for (var image in images) {
+    // Sana faqat yili, oyi va kuni
+    String date = image.createDateTime.toLocal().toString().split(' ')[0];
+    if (groupedImages[date] == null) {
+      groupedImages[date] = [];
+    }
+    groupedImages[date]!.add(image);
+  }
 
-return groupedImages;
+  return groupedImages;
 }
 ```
-
 <br>
 
-- **Ma'lumot turi**: Ushbu metod `Map<String, List<AssetEntity>>` turidagi qiymatni qaytaradi, ya'ni
-  sanalarga asoslangan ravishda tasvirlar (`AssetEntity` obyektlari) guruhlanadi.
+- **Ma'lumot turi**: Ushbu metod `Map<String, List<AssetEntity>>` turidagi qiymatni qaytaradi, ya'ni sanalarga asoslangan ravishda tasvirlar (`AssetEntity` obyektlari) guruhlanadi.
 - **Foydalanuvchi maqsadi**: Tasvirlar ro'yxatini sana bo'yicha guruhlash.
 - **Qanday ishlaydi**:
-    - `image.createDateTime.toLocal().toString().split(' ')[0]` qator yordamida tasvirning
-      yaratilgan sanasi olinadi va faqat yili, oyi va kuni olinadi (`YYYY-MM-DD` formatida).
-    - `groupedImages` xaritasida sanaga asoslangan guruhlar yaratilib, har bir guruhga mos tasvirlar
-      qo'shiladi.
-    - `groupedImages` xaritasi, sanalar va ular bilan bog'langan tasvirlar ro'yxatini o'z ichiga
-      oladi.
+    - `image.createDateTime.toLocal().toString().split(' ')[0]` qator yordamida tasvirning yaratilgan sanasi olinadi va faqat yili, oyi va kuni olinadi (`YYYY-MM-DD` formatida).
+    - `groupedImages` xaritasida sanaga asoslangan guruhlar yaratilib, har bir guruhga mos tasvirlar qo'shiladi.
+    - `groupedImages` xaritasi, sanalar va ular bilan bog'langan tasvirlar ro'yxatini o'z ichiga oladi.
 
-**Misol**: Agar `images` ro'yxatida 3 ta tasvir bo'lsa va ular turli sanalarda bo'lsa, metod ularni
-har bir sanaga mos ravishda guruhlaydi.
+**Misol**: Agar `images` ro'yxatida 3 ta tasvir bo'lsa va ular turli sanalarda bo'lsa, metod ularni har bir sanaga mos ravishda guruhlaydi.
 
 ### 2. `dateFormat` metodi:
-
 <br>
 
 ```dart
-static String dateFormat
-(
-String? dateString) {
-if (dateString == null || dateString.isEmpty) {
-return 'Unknown Date'; // Default qiymat
-}
+static String dateFormat(String? dateString) {
+  if (dateString == null || dateString.isEmpty) {
+    return 'Unknown Date'; // Default qiymat
+  }
 
-try {
-// Stringni DateTime obyektiga o'zgartirish
-DateTime date = DateTime.parse(dateString);
+  try {
+    // Stringni DateTime obyektiga o'zgartirish
+    DateTime date = DateTime.parse(dateString);
 
-// Sana formatlash
-return DateFormat('MMM dd, yyyy').format(date);
-} catch (e) {
-// Agar format noto'g'ri bo'lsa
-return 'Invalid Date';
-}
+    // Sana formatlash
+    return DateFormat('MMM dd, yyyy').format(date);
+  } catch (e) {
+    // Agar format noto'g'ri bo'lsa
+    return 'Invalid Date';
+  }
 }
 ```
-
 <br>
 
-- **Ma'lumot turi**: Ushbu metod `String` turidagi qiymatni qaytaradi, ya'ni sananing formatlangan
-  ko'rinishini.
+
+- **Ma'lumot turi**: Ushbu metod `String` turidagi qiymatni qaytaradi, ya'ni sananing formatlangan ko'rinishini.
 - **Foydalanuvchi maqsadi**: Berilgan sana satrini o'zgartirib, uni kerakli formatda chiqarish.
--
+- 
 - **Qanday ishlaydi**:
     - Agar `dateString` `null` yoki bo'sh bo'lsa, metod `'Unknown Date'` matnini qaytaradi.
     - Sana stringi `DateTime.parse(dateString)` yordamida `DateTime` obyektiga aylantiriladi.
-    - `DateFormat('MMM dd, yyyy').format(date)` yordamida sana kerakli formatda (
-      masalan: `Jan 01, 2025`) qaytariladi.
+    - `DateFormat('MMM dd, yyyy').format(date)` yordamida sana kerakli formatda (masalan: `Jan 01, 2025`) qaytariladi.
     - Agar sana noto'g'ri formatda bo'lsa, metod `'Invalid Date'` xatolik xabarini qaytaradi.
 
-**Misol**: Agar `dateString` `2025-01-01T12:00:00Z` bo'lsa, metod `'Jan 01, 2025'` natijasini
-qaytaradi.
+**Misol**: Agar `dateString` `2025-01-01T12:00:00Z` bo'lsa, metod `'Jan 01, 2025'` natijasini qaytaradi.
 
 ### Xulosa:
-
 - `groupImagesByDate` metodi tasvirlarni sanaga qarab guruhlash uchun ishlatiladi.
 - `dateFormat` metodi esa sana satrini kerakli formatda chiqarish uchun ishlatiladi.
-- Ikki metod ham foydalanuvchiga tasvirlar va sana bilan ishlashda yordam beradigan funktsional
-  imkoniyatlar taqdim etadi.
+- Ikki metod ham foydalanuvchiga tasvirlar va sana bilan ishlashda yordam beradigan funktsional imkoniyatlar taqdim etadi.
 
 ## Routes
-
-Ushbu kod `AppPages` sinfini yaratadi, bu sinf ilovada ishlatiladigan sahifalar (routes) va ularning
-tegishli bloklarini (Blocs) boshqarish uchun javobgardir. Tahlil qilaylik:
+Ushbu kod `AppPages` sinfini yaratadi, bu sinf ilovada ishlatiladigan sahifalar (routes) va ularning tegishli bloklarini (Blocs) boshqarish uchun javobgardir. Tahlil qilaylik:
 
 ### 1. `AppPages` sinfi:
 
 #### 1.1. `observer` (RouteObserver)
-
 <br>
 
 ```dart
-
 static final RouteObserver<Route> observer = RouteObserver();
 ```
-
 <br>
 
-`RouteObserver` — bu, ilovaning marshrut (yoki sahifa) o'zgarishlarini kuzatish uchun ishlatiladi.
-Masalan, sahifalar o'zgarganida yoki qayta ko'rsatilganda (push/pop) kuzatuvchi ishlatiladi.
-
-- **Foydalanuvchi maqsadi**: Sahifalar orasidagi o'zgarishlarni kuzatish va ilova tarixini
-  boshqarish.
+ `RouteObserver` — bu, ilovaning marshrut (yoki sahifa) o'zgarishlarini kuzatish uchun ishlatiladi. Masalan, sahifalar o'zgarganida yoki qayta ko'rsatilganda (push/pop) kuzatuvchi ishlatiladi.
+- **Foydalanuvchi maqsadi**: Sahifalar orasidagi o'zgarishlarni kuzatish va ilova tarixini boshqarish.
 
 #### 1.2. `history` (List<String>)
-
 <br>
 
 ```dart
-
 static List<String> history = [];
 ```
-
 <br>
 
-Bu ro'yxat, ilovaning tarixini saqlaydi, ya'ni foydalanuvchi qaysi sahifalardan o'tganligini saqlash
-uchun ishlatiladi.
-
+Bu ro'yxat, ilovaning tarixini saqlaydi, ya'ni foydalanuvchi qaysi sahifalardan o'tganligini saqlash uchun ishlatiladi.
 - **Foydalanuvchi maqsadi**: Ilova navigatsiyasining tarixini saqlash va unga murojaat qilish.
 
 #### 1.3. `routes()` (List<PageEntity>)
-
 <br>
 
 ```dart
-static List<PageEntity> routes
-() {
-return [
-PageEntity(
-path: AppRoutes.MAIN,
-page: MainScreen(),
-bloc: BlocProvider(create: (_) => MainBloc())
-),
-PageEntity(
-path: AppRoutes.GALLERY,
-page: GalleryScreen(),
-bloc: BlocProvider(create: (_) => GalleryBloc(mediaAssetsUseCase: getIt<MediaAssetsUseCase>()))
-),
-PageEntity(
-path: AppRoutes.ALBUMS,
-page: AlbumsScreen(),
-bloc: BlocProvider(create: (_) => AlbumsBloc(albumsItemUseCase: getIt<AlbumsItemUseCase>(), albumsUseCase: getIt<AlbumsUseCase>()))
-),
-];
+static List<PageEntity> routes(){
+  return [
+    PageEntity(
+      path: AppRoutes.MAIN,
+      page: MainScreen(),
+      bloc: BlocProvider(create: (_) => MainBloc())
+    ),
+    PageEntity(
+      path: AppRoutes.GALLERY,
+      page: GalleryScreen(),
+      bloc: BlocProvider(create: (_) => GalleryBloc(mediaAssetsUseCase: getIt<MediaAssetsUseCase>()))
+    ),
+    PageEntity(
+      path: AppRoutes.ALBUMS,
+      page: AlbumsScreen(),
+      bloc: BlocProvider(create: (_) => AlbumsBloc(albumsItemUseCase: getIt<AlbumsItemUseCase>(), albumsUseCase: getIt<AlbumsUseCase>()))
+    ),
+  ];
 }
-`
-`
-`
--
-<
-br>
+```
 
-Bu metod
-
-ilovadagi barcha
-
-sahifalar va
-
-ular bilan
-bog'liq `BlocProvider`lar ro
-'
-yxatini
-
-qaytaradi.Har bir
-`
-PageEntity`
-
-obyekti sahifaning
-`
-path` (
-yo'l), sahifa widgeti (`page`), va sahifa bilan bog'liq `bloc`ni o'z ichiga oladi.
+<br>
+Bu metod ilovadagi barcha sahifalar va ular bilan bog'liq `BlocProvider`lar ro'yxatini qaytaradi. Har bir `PageEntity` obyekti sahifaning `path` (yo'l), sahifa widgeti (`page`), va sahifa bilan bog'liq `bloc`ni o'z ichiga oladi.
 - **Foydalanuvchi maqsadi**: Ilovadagi barcha sahifalar va ularning `Bloc`larini ro'yxatga olish, navigatsiya qilish va kerakli sahifalarni ko'rsatish.
 
 #### 1.4. `blocer()` (List<dynamic>)
@@ -1258,60 +1183,49 @@ yo'l), sahifa widgeti (`page`), va sahifa bilan bog'liq `bloc`ni o'z ichiga olad
 
 ```dart
 static List<dynamic> blocer(BuildContext context) {
-List<dynamic> blocerList = <dynamic>[];
+  List<dynamic> blocerList = <dynamic>[];
 
-for (var blocer in routes()) {
-blocerList.add(blocer.bloc);
-}
-return blocerList;
+  for (var blocer in routes()) {
+    blocerList.add(blocer.bloc);
+  }
+  return blocerList;
 }
 ```
-
 <br>
 
-Bu metod `routes()` ro'yxatidan har bir sahifaning `bloc`ini olib, ularni alohida ro'yxatda (List)
-saqlaydi va qaytaradi. Bu metod ilovadagi barcha `Bloc`larni olish uchun ishlatiladi.
-
+ Bu metod `routes()` ro'yxatidan har bir sahifaning `bloc`ini olib, ularni alohida ro'yxatda (List) saqlaydi va qaytaradi. Bu metod ilovadagi barcha `Bloc`larni olish uchun ishlatiladi.
 - **Foydalanuvchi maqsadi**: Barcha kerakli `Bloc`larni olish va ularni boshqarish.
 
 #### 1.5. `generateRouteSettings()` (MaterialPageRoute?)
-
 <br>
 
 ```dart
-static MaterialPageRoute? generateRouteSettings
-(
-RouteSettings settings) {
-if (settings.name != null) {
-var result = routes().where((element) => element.path == settings.name);
-if (result.isNotEmpty) {
-if (result.first.path == AppRoutes.initialRoute) {
-return MaterialPageRoute<void>(
-builder: (_) => MainScreen(), settings: settings);
-}
-return MaterialPageRoute<void>(
-builder: (_) => result.first.page, settings: settings);
-}
-}
-return null;
+static MaterialPageRoute? generateRouteSettings(RouteSettings settings) {
+  if (settings.name != null) {
+    var result = routes().where((element) => element.path == settings.name);
+    if (result.isNotEmpty) {
+      if (result.first.path == AppRoutes.initialRoute) {
+        return MaterialPageRoute<void>(
+            builder: (_) => MainScreen(), settings: settings);
+      }
+      return MaterialPageRoute<void>(
+          builder: (_) => result.first.page, settings: settings);
+    }
+  }
+  return null;
 }
 ```
-
 <br>
 
-Bu metod dinamik marshrutlashni boshqaradi. `RouteSettings`dan kelgan `name` qiymati bo'yicha sahifa
-topiladi va kerakli sahifa yuklanadi.
-- Agar `settings.name` `AppRoutes.MAIN` kabi bir yo'lni ko'rsatsa, ilova `MainScreen`ni ochadi.
-- Agar `settings.name` boshqa bir yo'lni ko'rsatsa, `routes()` ro'yxatidan mos sahifa topiladi va
-yuklanadi.
-- Agar sahifa topilmasa, `null` qaytariladi.
-
+Bu metod dinamik marshrutlashni boshqaradi. `RouteSettings`dan kelgan `name` qiymati bo'yicha sahifa topiladi va kerakli sahifa yuklanadi.
+    - Agar `settings.name` `AppRoutes.MAIN` kabi bir yo'lni ko'rsatsa, ilova `MainScreen`ni ochadi.
+    - Agar `settings.name` boshqa bir yo'lni ko'rsatsa, `routes()` ro'yxatidan mos sahifa topiladi va yuklanadi.
+    - Agar sahifa topilmasa, `null` qaytariladi.
 - **Foydalanuvchi maqsadi**: Dinamik ravishda sahifalarni yuklash va marshrutlarni boshqarish.
 
 ---
 
 ### 2. `PageEntity` sinfi:
-
 <br>
 
 ```dart
@@ -1327,48 +1241,40 @@ class PageEntity<T> {
   });
 }
 ```
-
 <br>
 
 **`PageEntity`** — bu sahifa va uning tegishli `bloc`ini saqlash uchun ishlatiladigan oddiy sinf.
-- `path`: Sahifaning yo'li (masalan, `AppRoutes.MAIN`).
-- `page`: Sahifa widgeti (masalan, `MainScreen`).
-- `bloc`: Sahifa bilan bog'liq `Bloc` (masalan, `MainBloc`).
-
+    - `path`: Sahifaning yo'li (masalan, `AppRoutes.MAIN`).
+    - `page`: Sahifa widgeti (masalan, `MainScreen`).
+    - `bloc`: Sahifa bilan bog'liq `Bloc` (masalan, `MainBloc`).
 - **Foydalanuvchi maqsadi**: Har bir sahifa, uning yo'li va tegishli `Bloc`ini saqlash.
 
 ### Xulosa:
-
 - **AppPages** sinfi ilovadagi sahifalar va ularning `Bloc`larini boshqaradi.
 - **routes()** metodi sahifalar ro'yxatini yaratadi va kerakli `Bloc`lar bilan qaytaradi.
 - **generateRouteSettings()** metodi dinamik marshrutlashni boshqaradi.
 - **blocer()** metodi ilovadagi barcha `Bloc`larni qaytaradi.
 
-Bu tizim sahifalar va ularning kerakli holatlarini boshqarishda yordam beradi va ilovadagi
-marshrutlarni dinamik ravishda boshqarishni osonlashtiradi.
+Bu tizim sahifalar va ularning kerakli holatlarini boshqarishda yordam beradi va ilovadagi marshrutlarni dinamik ravishda boshqarishni osonlashtiradi.
+
 
 ## Dependencies
 
-Ushbu kodda `GetIt` kutubxonasi yordamida ilovadagi turli xizmatlarni va bloklarni (BLoC) oson
-boshqarish va ularga murojaat qilish uchun bog'lanishlar (dependencies) o'rnatilgan. Kodning har bir
-qismi quyidagicha ishlaydi:
+Ushbu kodda `GetIt` kutubxonasi yordamida ilovadagi turli xizmatlarni va bloklarni (BLoC) oson boshqarish va ularga murojaat qilish uchun bog'lanishlar (dependencies) o'rnatilgan. Kodning har bir qismi quyidagicha ishlaydi:
 
 ### 1. `getIt`:
 <br>
 
 ```dart
-
 final getIt = GetIt.instance;
 ```
 <br>
 
-
-`GetIt` - bu Dart uchun eng mashhur bog'lanishlarni boshqarish kutubxonasi. Bu orqali
-  ilovada barcha zaruriy ob'ektlarni ro'yxatga olish va ularga osonlik bilan murojaat qilish mumkin.
-- **Foydalanuvchi maqsadi**: `getIt` yordamida bog'lanishlar (services, repositories, blocs)
-  boshqariladi va ularga oson murojaat qilish mumkin.
+`GetIt` - bu Dart uchun eng mashhur bog'lanishlarni boshqarish kutubxonasi. Bu orqali ilovada barcha zaruriy ob'ektlarni ro'yxatga olish va ularga osonlik bilan murojaat qilish mumkin.
+- **Foydalanuvchi maqsadi**: `getIt` yordamida bog'lanishlar (services, repositories, blocs) boshqariladi va ularga oson murojaat qilish mumkin.
 
 ### 2. `init()`:
+
 <br>
 
 ```dart
@@ -1381,88 +1287,83 @@ Future<void> init() async {
 ```
 <br>
 
-Bu funksiya barcha kerakli
-  komponentlarni (`DataSources`, `Repositories`, `UseCases`, `Blocs`) ro'yxatga olish uchun
-  ishlatiladi. Bu metod ilova ishga tushganida barcha bog'lanishlar va resurslar to'g'ri o'
-  rnatilishi uchun ishlaydi.
-- **Foydalanuvchi maqsadi**: Ilovaning boshlanishida barcha zarur komponentlarni ro'yxatga olish va
-  ularni ishlatishga tayyor qilish.
+ Bu funksiya barcha kerakli komponentlarni (`DataSources`, `Repositories`, `UseCases`, `Blocs`) ro'yxatga olish uchun ishlatiladi. Bu metod ilova ishga tushganida barcha bog'lanishlar va resurslar to'g'ri o'rnatilishi uchun ishlaydi.
+- **Foydalanuvchi maqsadi**: Ilovaning boshlanishida barcha zarur komponentlarni ro'yxatga olish va ularni ishlatishga tayyor qilish.
 
 ### 3. `initDataSource()`:
+
 <br>
+
 
 ```dart
 void initDataSource() {
   getIt.registerLazySingleton<MediaLocalDataSourceImpl>(
-          () => MediaLocalDataSourceImpl());
+      () => MediaLocalDataSourceImpl());
   getIt.registerLazySingleton<AlbumsLocalDataSourceImpl>(
-          () => AlbumsLocalDataSourceImpl());
+      () => AlbumsLocalDataSourceImpl());
 }
-```
+``` 
 <br>
 
- Bu metod ilovadagi lokal ma'lumot manbalarini (`DataSources`) ro'yxatga oladi.
+Bu metod ilovadagi lokal ma'lumot manbalarini (`DataSources`) ro'yxatga oladi.
     - `MediaLocalDataSourceImpl`: Media fayllari bilan ishlash uchun lokal manba.
     - `AlbumsLocalDataSourceImpl`: Albomlar bilan ishlash uchun lokal manba.
-- **Foydalanuvchi maqsadi**: Mahalliy ma'lumot manbalarini (local data sources) ro'yxatga olish va
-  ishlatishga tayyorlash.
+- **Foydalanuvchi maqsadi**: Mahalliy ma'lumot manbalarini (local data sources) ro'yxatga olish va ishlatishga tayyorlash.
 
 ### 4. `initRepositories()`:
+
 <br>
 
 ```dart
 void initRepositories() {
   getIt.registerLazySingleton<MediaRepositoryImpl>(
-        () => MediaRepositoryImpl(getIt<MediaLocalDataSourceImpl>()),
+    () => MediaRepositoryImpl(getIt<MediaLocalDataSourceImpl>()),
   );
   getIt.registerLazySingleton<AlbumsRepositoryImpl>(
-        () => AlbumsRepositoryImpl(getIt<AlbumsLocalDataSourceImpl>()),
+    () => AlbumsRepositoryImpl(getIt<AlbumsLocalDataSourceImpl>()),
   );
 }
 ```
+
 <br>
 
- Bu metodda ilovadagi `Repositories` ro'yxatga olinadi.
+Bu metodda ilovadagi `Repositories` ro'yxatga olinadi.
     - `MediaRepositoryImpl`: Media ma'lumotlarini olish va saqlash uchun mas'ul.
     - `AlbumsRepositoryImpl`: Albom ma'lumotlarini olish va saqlash uchun mas'ul.
-- **Foydalanuvchi maqsadi**: Ma'lumotlarni olish va saqlash jarayonlarini boshqaradigan
-  repositoriylarni ro'yxatga olish.
+- **Foydalanuvchi maqsadi**: Ma'lumotlarni olish va saqlash jarayonlarini boshqaradigan repositoriylarni ro'yxatga olish.
 
 ### 5. `initUseCases()`:
+
 <br>
 
 ```dart
 void initUseCases() {
   getIt.registerLazySingleton(
-          () => AlbumsUseCase(getIt<AlbumsRepositoryImpl>()));
+      () => AlbumsUseCase(getIt<AlbumsRepositoryImpl>()));
 
   getIt.registerLazySingleton(
-          () => AlbumsItemUseCase(getIt<AlbumsRepositoryImpl>()));
+      () => AlbumsItemUseCase(getIt<AlbumsRepositoryImpl>()));
 
   getIt.registerLazySingleton(
-          () => MediaAssetsUseCase(getIt<MediaRepositoryImpl>()));
+      () => MediaAssetsUseCase(getIt<MediaRepositoryImpl>()));
 }
 ```
 <br>
-
  Bu metodda ilovadagi `UseCases` ro'yxatga olinadi.
     - `AlbumsUseCase`: Albomlar bilan bog'liq biznes mantiqni bajaradigan klass.
     - `AlbumsItemUseCase`: Albomlar bo'yicha maxsus operatsiyalarni bajaradi.
     - `MediaAssetsUseCase`: Media aktivlari bilan bog'liq biznes mantiqni bajaradi.
-- **Foydalanuvchi maqsadi**: Dasturdagi biznes mantiqlarini ishlatish uchun zarur bo'lgan `UseCase`
-  larni ro'yxatga olish.
+- **Foydalanuvchi maqsadi**: Dasturdagi biznes mantiqlarini ishlatish uchun zarur bo'lgan `UseCase`larni ro'yxatga olish.
 
 ### 6. `initBlocs()`:
 <br>
 
 ```dart
 void initBlocs() {
-  getIt.registerFactory(() =>
-      GalleryBloc(
+  getIt.registerFactory(() => GalleryBloc(
         mediaAssetsUseCase: getIt<MediaAssetsUseCase>(),
       ));
-  getIt.registerFactory(() =>
-      AlbumsBloc(
+  getIt.registerFactory(() => AlbumsBloc(
         albumsItemUseCase: getIt<AlbumsItemUseCase>(),
         albumsUseCase: getIt<AlbumsUseCase>(),
       ));
@@ -1471,19 +1372,15 @@ void initBlocs() {
 ```
 <br>
 
-Bu metodda ilovadagi barcha `BLoC`lar ro'yxatga olinadi. `BLoC`lar — bu ilova holatini
-  boshqarish uchun ishlatiladi.
+Bu metodda ilovadagi barcha `BLoC`lar ro'yxatga olinadi. `BLoC`lar — bu ilova holatini boshqarish uchun ishlatiladi.
     - `GalleryBloc`: Media aktyorlar bilan bog'liq holatni boshqaradi.
     - `AlbumsBloc`: Albomlar bilan bog'liq holatni boshqaradi.
     - `MainBloc`: Asosiy sahifa uchun holatni boshqaradi.
-- **Foydalanuvchi maqsadi**: Sahifalar va funksiyalar uchun zarur bo'lgan holatni boshqarish
-  uchun `BLoC`larni ro'yxatga olish.
+- **Foydalanuvchi maqsadi**: Sahifalar va funksiyalar uchun zarur bo'lgan holatni boshqarish uchun `BLoC`larni ro'yxatga olish.
 
 ### Xulosa:
-
-Bu kodda `GetIt` orqali ilovadagi barcha zarur komponentlar (DataSources, Repositories, UseCases,
-BLoCs) ro'yxatga olinadi va ular ishlatishga tayyorlanadi. Bu arxitektura kodni boshqarishni
-osonlashtiradi va uni test qilishni soddalashtiradi. `LazySingleton` va `Factory` usullari yordamida
-komponentlar bir marta yaratilib, kerak bo'lganda ishlatiladi. Bu tizim `BLoC` holatni boshqarish va
+Bu kodda `GetIt` orqali ilovadagi barcha zarur komponentlar 
+(DataSources, Repositories, UseCases, BLoCs) ro'yxatga olinadi va ular ishlatishga tayyorlanadi. 
+Bu arxitektura kodni boshqarishni osonlashtiradi va uni test qilishni soddalashtiradi. `LazySingleton` va `Factory` 
+usullari yordamida komponentlar bir marta yaratilib, kerak bo'lganda ishlatiladi. Bu tizim `BLoC` holatni boshqarish va 
 ma'lumotlarga ishlov berishni tartibga soladi.
-
