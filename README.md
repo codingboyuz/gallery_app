@@ -264,11 +264,8 @@ manbalarini abstraksiyalash orqali kodni modulli va oson boshqariladigan qiladi.
    ```
 <br>
 
----
 
-# Use Cases haqida
-
- ## ✅ **Use Case haqida tushuncha va vazifasi**
+# ✅ **Use Case haqida tushuncha va vazifasi**
 
  **Use Case (Ish holati)** bu **Clean Architecture**'da asosiy qatlamlardan biri bo'lib,
   biznes mantiqni (business logic) ajratib olish uchun ishlatiladi.
