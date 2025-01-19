@@ -263,7 +263,9 @@ manbalarini abstraksiyalash orqali kodni modulli va oson boshqariladigan qiladi.
    }
    ```
 <br>
+
 ---
+
 # Use Cases haqida
 
  ## ✅ **Use Case haqida tushuncha va vazifasi**
