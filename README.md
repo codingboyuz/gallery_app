@@ -358,7 +358,7 @@ Shu tariqa, `Either<Failure, Type>` yordamida quyidagi holatlarni aniq ko'rsatis
 # Presentation **`Bloc` , `Event` , `State` **
 
 
-###  ** Bloc `AlbumsBloc` Klassining Asosiy Strukturası:**
+###  ** Bloc `AlbumsBloc` Klassining Asosiy Strukturası: **
 
    ```dart
    class AlbumsBloc extends Bloc<AlbumsEvent, AlbumsState> {
@@ -453,7 +453,7 @@ Shu tariqa, `Either<Failure, Type>` yordamida quyidagi holatlarni aniq ko'rsatis
 - **`AlbumsItemSuccess`**: Album rasmlari muvaffaqiyatli yuklandi.
 
 ---
-## Event qismi
+## Event
 
 ### **`AlbumsEvent`** sinfi:
 
@@ -509,3 +509,83 @@ Uning ichida hech qanday parametr yo'q, ya'ni faqat `GetAlbumsEvent` chaqirilgan
 
 Blocda eventlar **UI qatlamidan** keladi va **Bloc** ularni qayta ishlaydi, ya'ni voqealar **Bloc** ga yuboriladi va Bloc tomonidan kerakli holat (state) yangilanadi.
 
+### State
+
+### **`AlbumsState`** sinfi:
+
+   ```dart
+   abstract class AlbumsState<T> {}
+   ```
+
+- **`AlbumsState`** sinfi **abstrakt** sinf bo'lib, boshqa holatlarni yaratishda umumiy asos bo'ladi.
+- **`T`** — bu generik parametr, ya'ni bu holatga kiradigan ma'lumot turini belgilash uchun ishlatiladi. `T` ma'lum bir holat uchun turli xil qiymatlar (masalan, rasm yoki albomlar ro'yxati) bo'lishi mumkin. Shu orqali turli xil ma'lumotlar uchun mos holatlarni yaratish mumkin.
+
+### **`AlbumsInitial`** sinfi:
+
+   ```dart
+   class AlbumsInitial extends AlbumsState {}
+   ```
+
+- **`AlbumsInitial`** — bu dastlabki holat (initial state). Ilova yoki ekranning boshlang'ich holati bo'lib, dastur ishga tushganda yoki ma'lumotlar hali yuklanmagan paytda ishlatiladi.
+- Bu holat dastur ishga tushishi bilan boshlanadi va uni faqat `Bloc` ni boshlashda ishlatish mumkin.
+
+### **`AlbumsLoading`** sinfi:
+
+   ```dart
+   class AlbumsLoading<T> extends AlbumsState {}
+   ```
+
+- **`AlbumsLoading`** — bu holat ma'lumotlar yuklanayotganini bildiradi. Agar serverdan yoki lokal ma'lumotlar bazasidan albomlar yoki boshqa ma'lumotlar olinayotgan bo'lsa, bu holat ishlatiladi.
+- Foydalanuvchi interfeysida bu holat uchun loading indikatorini (masalan, aylanuvchi yuklash iconi) ko'rsatish mumkin.
+
+### **`AlbumsSuccess`** sinfi:
+
+   ```dart
+   class AlbumsSuccess<T> extends AlbumsState {
+     final T data;
+   
+     AlbumsSuccess(this.data);
+   }
+   ```
+
+- **`AlbumsSuccess`** — bu holat, agar ma'lumotlar muvaffaqiyatli yuklansa, ishlatiladi. Bu holatda, **`T`** ma'lumotlar muvaffaqiyatli qaytarilgan turini bildiradi.
+   - **`data`** — bu parametr `T` turidagi ma'lumotni saqlaydi. Masalan, albomlar ro'yxati yoki tanlangan albumdagi rasmlar.
+- Bu holat UI'da ma'lumotlar muvaffaqiyatli yuklangandan keyin ko'rsatiladigan natijani (masalan, albomlar ro'yxatini) bildiradi.
+
+### **`AlbumsItemSuccess`** sinfi:
+
+   ```dart
+   class AlbumsItemSuccess<T> extends AlbumsState {
+     final T data;
+   
+     AlbumsItemSuccess(this.data);
+   }
+   ```
+
+- **`AlbumsItemSuccess`** — bu sinf **`AlbumsSuccess`** bilan juda o'xshash, lekin faqat bir albumdagi ma'lumotlarni yoki rasm elementlarini muvaffaqiyatli olish uchun ishlatiladi.
+- **`data`** — bu yerda ham **`T`** turidagi ma'lumot (masalan, albomdagi rasmlar) saqlanadi.
+
+### **`AlbumsError`** sinfi:
+
+   ```dart
+   class AlbumsError<T> extends AlbumsState {
+     final String error;
+   
+     AlbumsError(this.error);
+   }
+   ```
+
+- **`AlbumsError`** — bu holat ma'lumotlarni yuklash yoki boshqa operatsiyalar bajarilishida xato yuzaga kelganida ishlatiladi.
+   - **`error`** — bu xatolikni ta'riflovchi xabar (string). Bu xatolik foydalanuvchiga ko'rsatiladi (masalan, tarmoq xatoliklari yoki server xatoliklari).
+- UI'da xatolikni ko'rsatish uchun foydalaniladi (masalan, "Ma'lumotni yuklashda xatolik yuz berdi").
+
+### **Tahlil va umumiy tushuncha**:
+
+1. **Generik parametr**: `T` generik parametr sifatida ishlatilgan, bu esa har bir holatni turli ma'lumot turlari bilan moslashtirish imkonini beradi. Masalan, `AlbumsSuccess<List<AssetPathEntity>>` yoki `AlbumsError<String>`.
+2. **Bloc holatlari**: Bu holatlar **Bloc** arxitekturasida ishlatiladi. Har bir holat ilovaning turli bosqichlarini ifodalaydi:
+   - **`AlbumsInitial`** — dastlabki holat.
+   - **`AlbumsLoading`** — ma'lumotlar yuklanayotganda.
+   - **`AlbumsSuccess`** va **`AlbumsItemSuccess`** — muvaffaqiyatli holatlar (albomlar va rasmlar yuklangan).
+   - **`AlbumsError`** — xatolik yuz berganda.
+
+Bu holatlar yordamida ilovadagi har bir turli holatni boshqarish va foydalanuvchiga tegishli ma'lumotlarni ko'rsatish mumkin.
