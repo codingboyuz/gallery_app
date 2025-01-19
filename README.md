@@ -37,7 +37,7 @@ ham mumkin muhumi ko'd strukturasi buzulmasligi lozim;
 ### TDD Malumot oqimi:
 <br>
 
-<div align="center" style="background-color: white; padding: 10px; display: inline-block;">
+<div align="center" style="background-color: #ffffff; padding: 10px; display: inline-block;">
   <img src="assets/readme/tdd.webp" alt="tdd" />
 </div>
 
