@@ -54,7 +54,7 @@ aloqada bo'lishlari mumkin;
 **Bu loiyhada**-api bilan ishlanmagani uchun bizga `**Remote Data Sources**` mavjud emas bizga  `**Local Data Sources**`ni o'zi yetarli bo'ladi.
 bizda **`Local Data Sources`** bilan ishlash uchun ushbu `abstract class AlbumsLocalDataSource` mavjud 👇🏻
 
-**`AlbumsLocalDataSource` nima qiladi?**
+### **`AlbumsLocalDataSource` nima qiladi?**
 - Albomlar va albom ichidagi fayllarni boshqaradi.
 - Foydalanuvchi ruxsatlarini tekshiradi va media fayllarga kirishni ta'minlaydi.
 
@@ -76,7 +76,24 @@ abstract interface class AlbumsLocalDataSource {
   Future<List<AssetEntity>> loadAlbumsItem(AssetPathEntity selectedAlbum);
 }
 ```
-Endi bu class dan meros olamiz
+### **Abstract Class (Interfeys) Nega Kerak?**
+Abstract class yozishdan maqsad:
+1. **Modullarni ajratish va yanada aniq struktura yaratish:**
+   - `AlbumsLocalDataSource` — bu interfeys bo'lib, **faqatgina funksiyalarni e'lon qiladi**. Bu esa implementatsiyani (asosiy kodni) boshqacha yozishga imkon beradi.
+   - Sizning implementatsiyangiz (`AlbumsLocalDataSourceImpl`) esa interfeysdagi funksiyalarni haqiqiy hayotda qanday ishlashini ko'rsatadi.
+
+2. **Moslashuvchanlik (Flexibility):**
+   - Agar boshqa turdagi media manager kutubxonasiga (masalan, boshqa kutubxona yoki backend) o'tmoqchi bo'lsangiz, faqat yangi implementatsiya yozasiz.
+   - Interfeys orqali boshqa qismdagi kodga ta'sir qilmasdan, yangi implementatsiya ishlatiladi.
+
+3. **Kodni o'qilishi va testlanishini osonlashtirish:**
+   - Abstract class bilan ishlaganda, ilova logikasi toza va tushunarli bo'ladi. Har bir sinf o'z vazifasini bajaradi va bir joyga haddan tashqari ko'p kod yozilmaydi.
+
+4. **Jamoaviy ishlashda yordam:**
+   - Jamoangizdagi boshqa dasturchilar sizning abstract classingizdan foydalanib, uning ustiga boshqa implementatsiyalar yozishi yoki turli modullarga ulanishi mumkin.
+
+---
+Endi bu `abstract class AlbumsLocalDataSource` dan meros olamiz
 
 ```dart
 // Asosiy implementatsiya class, bu yerda lokal media ma'lumotlarini olish logikasi yozilgan.
@@ -126,26 +143,6 @@ class AlbumsLocalDataSourceImpl implements AlbumsLocalDataSource {
   }
 }
 ```
----
-
-### 2. **Abstract Class (Interfeys) Nega Kerak?**
-Abstract class yozishdan maqsad:
-1. **Modullarni ajratish va yanada aniq struktura yaratish:**
-   - `AlbumsLocalDataSource` — bu interfeys bo'lib, **faqatgina funksiyalarni e'lon qiladi**. Bu esa implementatsiyani (asosiy kodni) boshqacha yozishga imkon beradi.
-   - Sizning implementatsiyangiz (`AlbumsLocalDataSourceImpl`) esa interfeysdagi funksiyalarni haqiqiy hayotda qanday ishlashini ko'rsatadi.
-
-2. **Moslashuvchanlik (Flexibility):**
-   - Agar boshqa turdagi media manager kutubxonasiga (masalan, boshqa kutubxona yoki backend) o'tmoqchi bo'lsangiz, faqat yangi implementatsiya yozasiz.
-   - Interfeys orqali boshqa qismdagi kodga ta'sir qilmasdan, yangi implementatsiya ishlatiladi.
-
-3. **Kodni o'qilishi va testlanishini osonlashtirish:**
-   - Abstract class bilan ishlaganda, ilova logikasi toza va tushunarli bo'ladi. Har bir sinf o'z vazifasini bajaradi va bir joyga haddan tashqari ko'p kod yozilmaydi.
-
-4. **Jamoaviy ishlashda yordam:**
-   - Jamoangizdagi boshqa dasturchilar sizning abstract classingizdan foydalanib, uning ustiga boshqa implementatsiyalar yozishi yoki turli modullarga ulanishi mumkin.
-
----
-
 #### **Implementatsiya: `AlbumsLocalDataSourceImpl`**
 Bu sinf yuqoridagi interfeysning funksiyalarini **haqiqiy hayotda bajaradigan kodni** o'z ichiga oladi:
 
