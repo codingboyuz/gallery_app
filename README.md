@@ -288,38 +288,6 @@ manbalarini abstraksiyalash orqali kodni modulli va oson boshqariladigan qiladi.
 - `Params` - bu parametrlar, odatda, `UseCase` ishga tushirilganda kerakli parametrlar bo'ladi. Agar parametrlar kerak bo'lmasa, **`NoParams`** ishlatiladi.
 
 ---
-
-
- ### 🎯 **Use Case vazifasi**:
- - Ma'lumot olish yoki o'zgartirish jarayonidagi **logik qoidalarni bajaradi**.
- - **Repository**dan ma'lumotni oladi.
- - **UI yoki boshqa qatlamlar** bilan ishlashda to'g'ridan-to'g'ri Repository'ga murojaat qilishning oldini oladi,
-  shunda kod **modullashtirilgan** va **o'qilishi oson** bo'ladi.
-
----
-
- ### ✅ **Use Case qanday ishlaydi?**
-
- 1. **UI yoki ViewModel** **Use Case**'ni chaqiradi.
- 2. **Use Case** esa **Repository** bilan bog'lanib, ma'lumotni oladi.
- 3. Agar ma'lumot muvaffaqiyatli yuklansa, **Right (success)** qiymat qaytaradi.
- 4. Agar xato bo'lsa, **Left (failure)** qiymat qaytaradi.
-
- ---
-
- ### ✅ **Use Case ning afzalliklari:**
-
- 1. **Logik mantiqni ajratadi**: UI yoki boshqa qatlamlar faqat Use Case'lar bilan ishlaydi, bu esa **tartib va modullashtirishni** yaxshilaydi.
- 2. **Test qilishni osonlashtiradi**: Har bir Use Case alohida test qilinadi.
- 3. **Kodni qayta foydalanish imkonini beradi**: Bir xil logik qoidalarni turli joylarda ishlatishingiz mumkin.
-
- ---
-
-
-
-
-
-
 ### 2. **`MediaAssetsUseCase` Klassining Implementatsiyasi:**
 
 ```dart
@@ -339,22 +307,19 @@ class MediaAssetsUseCase implements UseCase<List<AssetEntity>, NoParams> {
 - `repositoryImpl` - bu **`MediaRepositoryImpl`** ob'ekti bo'lib, ma'lumotlarni olish logikasini amalga oshiradi. `repositoryImpl` orqali **media resurslarini** (masalan, rasmlar) olish amalga oshiriladi.
 - **`call` metodi** `NoParams` parametrlarini qabul qiladi va **`repositoryImpl.loadAssets()`** metodini chaqiradi. Bu metod, **assets** yoki media fayllarini olish uchun `MediaRepositoryImpl` tomonidan ta'minlangan implementatsiyani ishlatadi.
 - `repositoryImpl.loadAssets()` ma'lumotlarni olish jarayonini boshqaradi va **`Either<Failure, List<AssetEntity>>`** qaytaradi, ya'ni muvaffaqiyatli yoki xato holatlarni bildiruvchi natijani qaytaradi.
-
----
-
+--
 ### 3. **`NoParams` Sinfi:**
 
 Kodda **`NoParams`** sinfi ishlatilgan, lekin u alohida ko'rsatilmagan. Agar u mavjud bo'lsa, bu sinf **parametrlar bo'lmagan UseCase** uchun ishlatiladi.
 
 Misol:
-```dart
-class NoParams {}
-```
+   ```dart
+   class NoParams {}
+   ```
 
 **`NoParams`** sinfi `UseCase` uchun **parametrlar bo'lmagan holatni** ifodalaydi. Bu, ko'pincha, faqat ma'lum bir resursni olish (masalan, barcha albomlar yoki media fayllar) uchun ishlatiladi.
 
 ---
-
 ### 4. **`Either<Failure, Type>`:**
 
 Bu konsept **`dartz`** kutubxonasidan olingan. **`Either`** turidan foydalanish, muvaffaqiyat va xatolikni ajratib ko'rsatish uchun juda qulay.
@@ -372,20 +337,18 @@ Shu tariqa, `Either<Failure, Type>` yordamida quyidagi holatlarni aniq ko'rsatis
 
 ---
 
-### Tahlil: **UseCase** va **Repository**
-
-- **UseCase** - `MediaAssetsUseCase` klassi, ma'lumotlar qatlamiga bog'lanmasdan to'g'ridan-to'g'ri repository'dan ma'lumot olish jarayonini boshqaradi. Bu yondashuv **abstraktsiyalash** va **kodni ajratish** uchun muhimdir. Bu, ayniqsa, **TDD** (Test-Driven Development) yondashuvida testlarni osonlashtiradi, chunki har bir `UseCase` sinfi mustaqil ravishda testlanishi mumkin.
-- **Repository** - `repositoryImpl.loadAssets()` metodi orqali media aktivlarini olishni amalga oshiradi. Bu orqali, UI qatlamida ma'lumotlar qanday olinayotganini bilish shart emas, faqat `UseCase` bilan ishlash orqali oson interfeysga ega bo'lasiz.
-
-**TDD**da, `UseCase` va `Repository` ni alohida test qilish mumkin, bu esa har bir qatlamning to'g'riligi va sifatini mustahkamlaydi. Misol uchun, `MediaAssetsUseCase` klassini testlab, faqat uni to'g'ri ishlayotganini tekshirasiz, repository'dan ajratilgan holda.
+ ### 🎯 **Use Case vazifasi**:
+ - Ma'lumot olish yoki o'zgartirish jarayonidagi **logik qoidalarni bajaradi**.
+ - **Repository**dan ma'lumotni oladi.
+ - **UI yoki boshqa qatlamlar** bilan ishlashda to'g'ridan-to'g'ri Repository'ga murojaat qilishning oldini oladi,
+  shunda kod **modullashtirilgan** va **o'qilishi oson** bo'ladi.
 
 ---
 
-### Xulosa
+ ### ✅ **Use Case qanday ishlaydi?**
 
-- **UseCase** - kodni ajratish va modular qilishga yordam beradi.
-- **Repository** - ma'lumotlar qatlamini boshqaradi va UI bilan aloqalarni soddalashtiradi.
-- **Either** - muvaffaqiyat va xatolik holatlarini ajratib ko'rsatadi, sinovlarni osonlashtiradi.
-- **TDD** - har bir komponentni alohida testlash imkonini beradi.
-
-Shunday qilib, bu kod **Clean Architecture**ning asosiy prinsiplariga, shu jumladan **Test-Driven Development**ga mos keladi va kodni modular va sinovdan o'tkazishni osonlashtiradi.
+ 1. **UI yoki ViewModel** **Use Case**'ni chaqiradi.
+ 2. **Use Case** esa **Repository** bilan bog'lanib, ma'lumotni oladi.
+ 3. Agar ma'lumot muvaffaqiyatli yuklansa, **Right (success)** qiymat qaytaradi.
+ 4. Agar xato bo'lsa, **Left (failure)** qiymat qaytaradi.
+<br>
