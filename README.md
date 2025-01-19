@@ -807,7 +807,7 @@ BlocBuilder<AlbumsBloc, AlbumsState>(bloc: context.read<AlbumsBloc>()..add(GetAl
 <br>
 
 ```dart
-if (state is GalleryInitial) {
+if(state is GalleryInitial) {
           return Center(
             child: Text(
               "Initial",
@@ -898,9 +898,6 @@ Bu kod turli holatlarni boshqarib, foydalanuvchiga to'g'ri interfeysni taqdim et
 yuklanmoqda, muvaffaqiyatli yuklandi yoki xatolik yuzaga keldi.
 
 # Widget
-### Kodlarni clean code tamoyillari, ishlash tezligi va xavfsizlik jihatidan tahlil qilamiz.
-
----
 
 ### 🧩 1️⃣ **Class orqali yozilgan variant:**
 
@@ -1018,6 +1015,35 @@ class MediaEntityProvider extends StatelessWidget {
 }
 ```
 
+<br>
+
+# Core **`errors` `routes` `services`**
+
+## Errors
+
+Failure kalss xato yuz berganda uni saqlaydi va xatolik turi sifatida ishlatiladi
+<br>
+
+```dart
+class Failure {
+  final String message;
+
+  Failure({required this.message});
+}
+```
+<br>
+
+
+### Maqsad:
+- `Failure` sinfi dasturda xatoliklarni ifodalash uchun ishlatiladi. Masalan, biror operatsiya yoki tarmoq so'rovi muvaffaqiyatsiz bo'lsa, ushbu sinf yordamida xatolikni saqlash va foydalanuvchiga xatolik haqida ma'lumot berish mumkin. Bu xatolikni tizimga qaytarishda yoki foydalanuvchiga ko'rsatishda yordam beradi.
+
+### Misol:
+Agar tarmoq so'rovi muvaffaqiyatsiz bo'lsa, siz `Failure` sinfini quyidagicha ishlatishingiz mumkin:
+<br>
+
+```dart
+Failure failure = Failure(message: "Tarmoq so'rovi xatoligi.");
+```
 <br>
 
 
