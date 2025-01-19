@@ -52,7 +52,7 @@ ko'ra o'zaro
 aloqada bo'lishlari mumkin;
 `**Data**` va `**Presentation**` faqat Domain yordamida bir-biri bilan aloqa qilishi mumkin
 
-# Keling endi men o'z loyhamni tushun tirib o'taman
+# ✅ Keling endi men o'z loyhamni tushun tirib o'taman
 
 **Bu loiyhada**-api bilan ishlanmagani uchun bizga `**Remote Data Sources**` mavjud emas
 bizga  `**Local Data Sources**`ni o'zi yetarli bo'ladi.
@@ -173,7 +173,7 @@ Endi bu `abstract class AlbumsLocalDataSource` dan meros olamiz
     - Bu funksiya faqatgina tanlangan albom ichidagi fayllarni olib keladi.
 
 ---
-# Repository haqida
+# ✅ Repository haqida
 
 ### Repository: Nima uchun kerak?
 
@@ -307,7 +307,8 @@ class MediaAssetsUseCase implements UseCase<List<AssetEntity>, NoParams> {
 - `repositoryImpl` - bu **`MediaRepositoryImpl`** ob'ekti bo'lib, ma'lumotlarni olish logikasini amalga oshiradi. `repositoryImpl` orqali **media resurslarini** (masalan, rasmlar) olish amalga oshiriladi.
 - **`call` metodi** `NoParams` parametrlarini qabul qiladi va **`repositoryImpl.loadAssets()`** metodini chaqiradi. Bu metod, **assets** yoki media fayllarini olish uchun `MediaRepositoryImpl` tomonidan ta'minlangan implementatsiyani ishlatadi.
 - `repositoryImpl.loadAssets()` ma'lumotlarni olish jarayonini boshqaradi va **`Either<Failure, List<AssetEntity>>`** qaytaradi, ya'ni muvaffaqiyatli yoki xato holatlarni bildiruvchi natijani qaytaradi.
---
+---
+
 ### 3. **`NoParams` Sinfi:**
 
 Kodda **`NoParams`** sinfi ishlatilgan, lekin u alohida ko'rsatilmagan. Agar u mavjud bo'lsa, bu sinf **parametrlar bo'lmagan UseCase** uchun ishlatiladi.
@@ -320,6 +321,7 @@ Misol:
 **`NoParams`** sinfi `UseCase` uchun **parametrlar bo'lmagan holatni** ifodalaydi. Bu, ko'pincha, faqat ma'lum bir resursni olish (masalan, barcha albomlar yoki media fayllar) uchun ishlatiladi.
 
 ---
+
 ### 4. **`Either<Failure, Type>`:**
 
 Bu konsept **`dartz`** kutubxonasidan olingan. **`Either`** turidan foydalanish, muvaffaqiyat va xatolikni ajratib ko'rsatish uchun juda qulay.
