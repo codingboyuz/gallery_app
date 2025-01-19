@@ -275,12 +275,14 @@ manbalarini abstraksiyalash orqali kodni modulli va oson boshqariladigan qiladi.
   Use Case **domain layer**da joylashadi.
 
 ### 1. **`UseCase` Abstrakt Sinfi:**
+<br>
 
    ```dart
    abstract class UseCase<Type, Params> {
      Future<Either<Failure, Type>> call(Params params);
    }
    ```
+<br>
 
 - **`UseCase`** abstrakt sinfi umumiy `UseCase` konseptini ifodalaydi, u ma'lum bir **Type** (masalan, `List<AssetEntity>`) va **Params** (masalan, `NoParams`) bilan ishlaydi.
 - **`call`** metodi, **`Future<Either<Failure, Type>>`** turini qaytaradi, bu metodni asosan asinxron ravishda chaqirish kerak.
@@ -288,7 +290,11 @@ manbalarini abstraksiyalash orqali kodni modulli va oson boshqariladigan qiladi.
 - `Params` - bu parametrlar, odatda, `UseCase` ishga tushirilganda kerakli parametrlar bo'ladi. Agar parametrlar kerak bo'lmasa, **`NoParams`** ishlatiladi.
 
 ---
+<br>
+
+
 ### 2. **`MediaAssetsUseCase` Klassining Implementatsiyasi:**
+<br>
 
 ```dart
 class MediaAssetsUseCase implements UseCase<List<AssetEntity>, NoParams> {
@@ -302,6 +308,7 @@ class MediaAssetsUseCase implements UseCase<List<AssetEntity>, NoParams> {
   }
 }
 ```
+<br>
 
 - **`MediaAssetsUseCase`** - `UseCase` sinfini amalga oshirgan klass. Bu klass `List<AssetEntity>` va `NoParams` parametrlarini ishlatadi. Bu shuni anglatadiki, bu `UseCase` rasmlar yoki media aktivlarini olish uchun ishlatiladi.
 - `repositoryImpl` - bu **`MediaRepositoryImpl`** ob'ekti bo'lib, ma'lumotlarni olish logikasini amalga oshiradi. `repositoryImpl` orqali **media resurslarini** (masalan, rasmlar) olish amalga oshiriladi.
@@ -323,6 +330,7 @@ Misol:
 ---
 
 ### 4. **`Either<Failure, Type>`:**
+<br>
 
 Bu konsept **`dartz`** kutubxonasidan olingan. **`Either`** turidan foydalanish, muvaffaqiyat va xatolikni ajratib ko'rsatish uchun juda qulay.
 
@@ -358,7 +366,8 @@ Shu tariqa, `Either<Failure, Type>` yordamida quyidagi holatlarni aniq ko'rsatis
 # Presentation **`Bloc`  `Event`  `State`**
 
 
-###  ** Bloc `AlbumsBloc` Klassining Asosiy Strukturası: **
+###  **Bloc `AlbumsBloc` Klassining Asosiy Strukturası:**
+<br>
 
    ```dart
    class AlbumsBloc extends Bloc<AlbumsEvent, AlbumsState> {
@@ -374,17 +383,20 @@ Shu tariqa, `Either<Failure, Type>` yordamida quyidagi holatlarni aniq ko'rsatis
      }
    }
    ```
+<br>
 
 - **`AlbumsBloc`** - Bu Bloc sinfi **AlbumsEvent** voqealarini va **AlbumsState** holatlarini boshqaradi.
 - **`albumsUseCase`** va **`albumsItemUseCase`** - Bu ikkita usecase `AlbumsBloc` klassida yaratilgan va ma'lumotlarni olish uchun ishlatiladi. `albumsUseCase` albumlar ro'yxatini olishni, `albumsItemUseCase` esa album ichidagi rasmlar yoki fayllarni olishni boshqaradi.
 - **`super(AlbumsInitial())`** - Bloc boshlang'ich holatini belgilaydi. Dastlabki holat **`AlbumsInitial`** bo'ladi.
 
 ###  **Voqealar Qo'llanilishi:**
+<br>
 
    ```dart
    on<GetAlbumsEvent>(_getAlbums);
    on<GetAlbumsItemEvent>(_getAlbumsItem);
    ```
+<br>
 
 - **`on<GetAlbumsEvent>(_getAlbums)`**: `GetAlbumsEvent` voqeasi kelganda, `_getAlbums` metodini chaqiradi. Bu voqea albumlar ro'yxatini olish uchun ishlatiladi.
 - **`on<GetAlbumsItemEvent>(_getAlbumsItem)`**: `GetAlbumsItemEvent` voqeasi kelganda, `_getAlbumsItem` metodini chaqiradi. Bu voqea album ichidagi fayllarni olish uchun ishlatiladi.
@@ -392,6 +404,7 @@ Shu tariqa, `Either<Failure, Type>` yordamida quyidagi holatlarni aniq ko'rsatis
 ---
 
 ###  **`_getAlbums` Metodi:**
+<br>
 
    ```dart
    Future<void>? _getAlbums(
@@ -410,6 +423,7 @@ Shu tariqa, `Either<Failure, Type>` yordamida quyidagi holatlarni aniq ko'rsatis
      }
    }
    ```
+<br>
 
 - **`emit(AlbumsLoading())`**: Ma'lumot olish jarayoni boshlanganda **Loading** holatini yuboradi.
 - **`albumsUseCase.call(NoParams())`**: `albumsUseCase` yordamida albumlar ro'yxatini olish jarayoni. `NoParams` - parametrlar bo'lmagan holat.
@@ -419,6 +433,7 @@ Shu tariqa, `Either<Failure, Type>` yordamida quyidagi holatlarni aniq ko'rsatis
 ---
 
 ###  **`_getAlbumsItem` Metodi:**
+<br>
 
    ```dart
    Future<void> _getAlbumsItem(
@@ -437,6 +452,7 @@ Shu tariqa, `Either<Failure, Type>` yordamida quyidagi holatlarni aniq ko'rsatis
      }
    }
    ```
+<br>
 
 - **`emit(AlbumsLoading())`**: Yana Loading holati yuboriladi, bu yerda albumga tegishli rasm fayllari olish jarayoni boshlanadi.
 - **`albumsItemUseCase.call(event.selectedAlbum)`**: `albumsItemUseCase` yordamida tanlangan albumga tegishli rasm fayllari olinadi.
@@ -444,7 +460,7 @@ Shu tariqa, `Either<Failure, Type>` yordamida quyidagi holatlarni aniq ko'rsatis
 
 ---
 
-###  ** Blocning Holatlari (State): **
+###  **Blocning Holatlari (State):**
 
 - **`AlbumsInitial`**: Dastlabki holat, Bloc hali ishga tushmagan.
 - **`AlbumsLoading`**: Ma'lumot olish jarayoni davom etmoqda.
@@ -454,8 +470,10 @@ Shu tariqa, `Either<Failure, Type>` yordamida quyidagi holatlarni aniq ko'rsatis
 
 ---
 ## Event
+<br>
 
 ### **`AlbumsEvent`** sinfi:
+<br>
 
    ```dart
    abstract class AlbumsEvent extends Equatable {
@@ -465,6 +483,7 @@ Shu tariqa, `Either<Failure, Type>` yordamida quyidagi holatlarni aniq ko'rsatis
      List<Object?> get props => [];
    }
    ```
+<br>
 
 - **`AlbumsEvent`** sinfi **`Equatable`** sinfidan meros oladi, bu esa Dartda ob'ektlarni solishtirishni osonlashtiradi. 
 - **`Equatable`** yordamida, agar ikkita ob'ektning barcha xususiyatlari bir xil bo'lsa, ular teng deb hisoblanadi. Bu holat Bloc arxitekturasida voqealarni (event) va holatlarni (state) oson taqqoslash uchun foydalidir.
@@ -474,15 +493,18 @@ Shu tariqa, `Either<Failure, Type>` yordamida quyidagi holatlarni aniq ko'rsatis
 - **`GetAlbumsItemEvent`** kabi sinflar o'z xususiyatlarini qo'shishi mumkin.
 
 ### **`GetAlbumsEvent`** sinfi:
+<br>
 
    ```dart
    class GetAlbumsEvent extends AlbumsEvent {}
    ```
+<br>
 
 - **`GetAlbumsEvent`** — Bu **`AlbumsEvent`** sinfidan meros olgan oddiy sinf. Bu voqea album ro'yxatini olish uchun ishlatiladi. 
 Uning ichida hech qanday parametr yo'q, ya'ni faqat `GetAlbumsEvent` chaqirilganda album ro'yxatini olish jarayoni boshlanadi.
 
 ### **`GetAlbumsItemEvent`** sinfi:
+<br>
 
    ```dart
    class GetAlbumsItemEvent extends AlbumsEvent {
@@ -491,6 +513,7 @@ Uning ichida hech qanday parametr yo'q, ya'ni faqat `GetAlbumsEvent` chaqirilgan
      const GetAlbumsItemEvent(this.selectedAlbum);
    }
    ```
+<br>
 
 - **`GetAlbumsItemEvent`** — Bu sinf **`AlbumsEvent`** dan meros olgan va **`selectedAlbum`** parametriga ega bo'lgan voqea sinfi. Bu voqea albumdan tanlangan rasm yoki faylni olish uchun ishlatiladi.
 - **`selectedAlbum`** — Bu parametr **`AssetPathEntity`** turidagi ob'ekt bo'lib, tanlangan albumni ifodalaydi. **`AssetPathEntity`** `photo_manager` paketidan keladi va albumlar yoki fotosuratlar to'plamini boshqarish uchun ishlatiladi.
@@ -508,37 +531,44 @@ Uning ichida hech qanday parametr yo'q, ya'ni faqat `GetAlbumsEvent` chaqirilgan
 - **`GetAlbumsItemEvent`**: Tanlangan albumdagi rasm yoki fayllarni olish uchun ishlatiladigan voqea.
 
 Blocda eventlar **UI qatlamidan** keladi va **Bloc** ularni qayta ishlaydi, ya'ni voqealar **Bloc** ga yuboriladi va Bloc tomonidan kerakli holat (state) yangilanadi.
-
+<br>
 ### State
-
+---
 ### **`AlbumsState`** sinfi:
+<br>
 
    ```dart
    abstract class AlbumsState<T> {}
    ```
+<br>
 
 - **`AlbumsState`** sinfi **abstrakt** sinf bo'lib, boshqa holatlarni yaratishda umumiy asos bo'ladi.
 - **`T`** — bu generik parametr, ya'ni bu holatga kiradigan ma'lumot turini belgilash uchun ishlatiladi. `T` ma'lum bir holat uchun turli xil qiymatlar (masalan, rasm yoki albomlar ro'yxati) bo'lishi mumkin. Shu orqali turli xil ma'lumotlar uchun mos holatlarni yaratish mumkin.
 
 ### **`AlbumsInitial`** sinfi:
+<br>
 
    ```dart
    class AlbumsInitial extends AlbumsState {}
    ```
+<br>
 
 - **`AlbumsInitial`** — bu dastlabki holat (initial state). Ilova yoki ekranning boshlang'ich holati bo'lib, dastur ishga tushganda yoki ma'lumotlar hali yuklanmagan paytda ishlatiladi.
 - Bu holat dastur ishga tushishi bilan boshlanadi va uni faqat `Bloc` ni boshlashda ishlatish mumkin.
 
 ### **`AlbumsLoading`** sinfi:
+<br>
 
    ```dart
    class AlbumsLoading<T> extends AlbumsState {}
    ```
+<br>
 
 - **`AlbumsLoading`** — bu holat ma'lumotlar yuklanayotganini bildiradi. Agar serverdan yoki lokal ma'lumotlar bazasidan albomlar yoki boshqa ma'lumotlar olinayotgan bo'lsa, bu holat ishlatiladi.
 - Foydalanuvchi interfeysida bu holat uchun loading indikatorini (masalan, aylanuvchi yuklash iconi) ko'rsatish mumkin.
 
 ### **`AlbumsSuccess`** sinfi:
+<br>
 
    ```dart
    class AlbumsSuccess<T> extends AlbumsState {
@@ -547,12 +577,14 @@ Blocda eventlar **UI qatlamidan** keladi va **Bloc** ularni qayta ishlaydi, ya'n
      AlbumsSuccess(this.data);
    }
    ```
+<br>
 
 - **`AlbumsSuccess`** — bu holat, agar ma'lumotlar muvaffaqiyatli yuklansa, ishlatiladi. Bu holatda, **`T`** ma'lumotlar muvaffaqiyatli qaytarilgan turini bildiradi.
    - **`data`** — bu parametr `T` turidagi ma'lumotni saqlaydi. Masalan, albomlar ro'yxati yoki tanlangan albumdagi rasmlar.
 - Bu holat UI'da ma'lumotlar muvaffaqiyatli yuklangandan keyin ko'rsatiladigan natijani (masalan, albomlar ro'yxatini) bildiradi.
 
 ### **`AlbumsItemSuccess`** sinfi:
+<br>
 
    ```dart
    class AlbumsItemSuccess<T> extends AlbumsState {
@@ -561,11 +593,13 @@ Blocda eventlar **UI qatlamidan** keladi va **Bloc** ularni qayta ishlaydi, ya'n
      AlbumsItemSuccess(this.data);
    }
    ```
+<br>
 
 - **`AlbumsItemSuccess`** — bu sinf **`AlbumsSuccess`** bilan juda o'xshash, lekin faqat bir albumdagi ma'lumotlarni yoki rasm elementlarini muvaffaqiyatli olish uchun ishlatiladi.
 - **`data`** — bu yerda ham **`T`** turidagi ma'lumot (masalan, albomdagi rasmlar) saqlanadi.
 
 ### **`AlbumsError`** sinfi:
+<br>
 
    ```dart
    class AlbumsError<T> extends AlbumsState {
@@ -574,6 +608,7 @@ Blocda eventlar **UI qatlamidan** keladi va **Bloc** ularni qayta ishlaydi, ya'n
      AlbumsError(this.error);
    }
    ```
+<br>
 
 - **`AlbumsError`** — bu holat ma'lumotlarni yuklash yoki boshqa operatsiyalar bajarilishida xato yuzaga kelganida ishlatiladi.
    - **`error`** — bu xatolikni ta'riflovchi xabar (string). Bu xatolik foydalanuvchiga ko'rsatiladi (masalan, tarmoq xatoliklari yoki server xatoliklari).
