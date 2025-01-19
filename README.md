@@ -174,7 +174,6 @@ class AlbumsLocalDataSourceImpl implements AlbumsLocalDataSource {
 
 ---
 # Repository haqida
----
 
 ### Repository: Nima uchun kerak?
 
@@ -199,15 +198,15 @@ manbalarini abstraksiyalash orqali kodni modulli va oson boshqariladigan qiladi.
 ### Repository Loyihada Qanday Ishlaydi?
 
 1. **Abstraktsiya yaratish:**
-    - `AlbumsRepository` interfeysini yaratamiz. U qanday funksiyalar kerakligini belgilaydi,
-      masalan:
-      ```dart
-      abstract interface class AlbumsRepository {
-        Future<Either<Failure, List<AssetPathEntity>>> loadAlbums();
-        Future<Either<Failure, List<AssetEntity>>> loadAlbumsItem(AssetPathEntity entity);
-      }
-      ```
-    - Bu UI qatlamiga faqat ma'lumot olish uchun qanday interfeyslar mavjudligini bildiradi.
+- `AlbumsRepository` interfeysini yaratamiz. U qanday funksiyalar kerakligini belgilaydi,
+  masalan:
+  ```dart
+  abstract interface class AlbumsRepository {
+    Future<Either<Failure, List<AssetPathEntity>>> loadAlbums();
+    Future<Either<Failure, List<AssetEntity>>> loadAlbumsItem(AssetPathEntity entity);
+  }
+  ```
+  - Bu UI qatlamiga faqat ma'lumot olish uchun qanday interfeyslar mavjudligini bildiradi.
 
 2. **Implementatsiya:**
     - `AlbumsRepositoryImpl` orqali bu interfeysni amalga oshirasiz. Bu joyda lokal va tarmoq
