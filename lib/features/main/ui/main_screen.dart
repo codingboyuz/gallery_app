@@ -31,17 +31,17 @@ class _MainScreenState extends State<MainScreen> {
           );
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        foregroundColor: Colors.white,
-        shape: const CircleBorder(),
-        backgroundColor: Colors.black,
-        child: const Icon(
-          Icons.qr_code_scanner_sharp,
-          size: 30,
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {},
+      //   foregroundColor: Colors.white,
+      //   shape: const CircleBorder(),
+      //   backgroundColor: Colors.black,
+      //   child: const Icon(
+      //     Icons.qr_code_scanner_sharp,
+      //     size: 30,
+      //   ),
+      // ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BlocBuilder<MainBloc, NavigationState>(
         builder: (context, state) {
           return AnimatedBottomNavigationBar(
@@ -58,6 +58,7 @@ class _MainScreenState extends State<MainScreen> {
             ],
             activeIndex: state.index,
             gapLocation: GapLocation.center,
+            splashSpeedInMilliseconds: 300,
             notchSmoothness: NotchSmoothness.defaultEdge,
             onTap: (value) {
               context.read<MainBloc>().changeTab(value);
